@@ -26,7 +26,7 @@ def bowyer(_mapping_fact, _mapping_to_convert):
 def fletcher(tree, path=list()):
     for k,v in tree.iteritems():
         if isinstance(v,Mapping):
-            for child in splint(v, (path + [ k ]) ):
+            for child in fletcher(v, (path + [ k ]) ):
                 yield child
 
         else:
