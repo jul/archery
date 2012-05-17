@@ -14,6 +14,9 @@ Hermitian Algebrae
 and so much more....
 
 """
-with open('/dev/null', 'w') as __import__('sys').stdout: from this import s
-__import__('sys').stderr.write(s.split("\n")[10].encode("rot-13") +  "\n" )
-raise Exception("Not implemented yet")
+from .trait import Adder, Muler, Subber, Diver
+
+class LinearAlgebrae(Adder, Muler, Diver, Subber): 
+    """A set of + - * / pretty consistant"""
+    pass
+

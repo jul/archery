@@ -5,7 +5,8 @@
 You'll make your code perspire smartness by all its pore(c)(tm)(r).
 """
 from collections import Mapping
-__all__ = [ 'Adder', 'Subber', 'Muler' ]
+from numbers import Number
+__all__ = [ 'Adder', 'Subber', 'Muler', 'Diver' ]
 
 class Adder():
     """ making dict able to add 
@@ -51,6 +52,30 @@ class Adder():
         return copy.__iadd__(other)
 
 
+class Diver():
+    """Making dict able to divide (you need to provide a muler)"""
+
+    def __div__(self, other):
+        """diver"""
+        copy = self.copy()
+        copy /= other
+        return copy
+
+    def __idiv__(self, other):
+        if isinstance(other,Number):
+            self.__iscalmul__(1.0/other)
+            return self
+        for k in other:
+            if k  in self:
+                self[k] = self[k]/other[k]
+        return self
+    
+    def __rdiv__(self, other):
+        if isinstance(other, Number):
+            copy=self.copy()
+            return copy.__iscalmul__(1/other)
+        return self.__div__(other)
+
 class Muler():
     """Making dict able to multiply"""
 
@@ -72,7 +97,7 @@ class Muler():
             return self
         for k in other:
             if k  in self:
-                self[k] = other[k]*self[k] if k in self else other[k]
+                self[k] = other[k]*self[k]
         return self
     
     def __rmul__(self, other):
@@ -89,16 +114,15 @@ class Subber():
         return copy
 
     def __isub__(self, other):
-        if isinstance(other,Number):
+        if not isinstance(other,Mapping):
             self.__iinc__(-other)
             return self
-            
         for k,v in other.items() :
             self[k] = self[k]-v  if k in self else -v
         return self
     
     def __rsub__(self, other):
-        if isinstance(other, Number):
+        if not isinstance(other,Mapping):
             copy=self.copy()
             return copy.__iinc__(-other)
         return self.__sub__(other)
@@ -106,3 +130,4 @@ class Subber():
     def __neg__(self):
         for k,v in self.iteritems():
             self[k]*=-1
+        return self

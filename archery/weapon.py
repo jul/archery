@@ -8,9 +8,10 @@ that seems harmless and seems to be powerfull.
 __all__ = [ 'Daddy', 'DDWA' ]
 
 from .trait import Adder
+from .quiver import LinearAlgebrae
 from collections import defaultdict
 
-class DDWA(Adder,defaultdict):
+class ShortBow(Adder,defaultdict):
     """Use this at your own risk.
     DDWA is the sigle for d(efault)dict with addition
     Daddy is the same class with the mnemonic for d(efault)dict with addition
@@ -27,8 +28,12 @@ class DDWA(Adder,defaultdict):
 """
     pass
 
-class Daddy(DDWA):
-    """I prefer this name"""
+class Daikyu(LinearAlgebrae, defaultdict): 
+    """japanese longbow"""
     pass
+    
+class LongBow():
+    def __init__(self):
+        raise Exception("This class is reserved for my prefered one")
 
 
