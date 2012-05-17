@@ -4,7 +4,7 @@
 (any class that quacks like a dict, key like dict, and fly like a dict).
 You'll make your code perspire smartness by all its pore(c)(tm)(r).
 """
-from numbers import Number
+from collections import Mapping
 __all__ = [ 'Adder', 'Subber', 'Muler' ]
 
 class Adder():
@@ -36,7 +36,7 @@ class Adder():
         return self
         
     def __iadd__(self, other):
-        if isinstance(other,Number):
+        if not isinstance(other,Mapping):
             self.__iinc__(other)
             return self
             
@@ -46,7 +46,7 @@ class Adder():
     
     def __radd__(self, other):
         copy=self.copy()
-        if isinstance(other, Number):
+        if not isinstance(other, Mapping):
             return copy.__iinc__(other)
         return copy.__iadd__(other)
 
