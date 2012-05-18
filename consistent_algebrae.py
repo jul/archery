@@ -11,7 +11,7 @@ Mainly the tests are coming out of a math book
 
 from copy import deepcopy
 
-from archery.weapon import Daikyu as VectorDict
+from archery.bow import Daikyu as VectorDict
 
 can_be_walked =  lambda _class : hasattr(_class,"values")
 
@@ -101,7 +101,7 @@ class ConsistentAlgebrae(object):
             print "*" * 50 + "\n"
             print "%(counter)r/%(success)r" % self.__dict__
             if self.counter  == self.success and self.algebraic_logic:
-                print "%r respects the algebraic acceptation of addition" % (
+                print "%r respects the linear algebrae standard rules " % (
                     self._one.__class__
                 )
 
