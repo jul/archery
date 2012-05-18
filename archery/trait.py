@@ -6,7 +6,7 @@ You'll make your code perspire smartness by all its pore(c)(tm)(r).
 """
 from collections import Mapping
 from numbers import Number
-from operator import truediv
+from operator import truediv, itruediv
 __all__ = [ 'Adder', 'Subber', 'Muler', 'Diver' ]
 
 class Adder():
@@ -59,7 +59,7 @@ class Diver():
     def __div__(self, other):
         """diver"""
         copy = self.copy()
-        copy /= other
+        copy = itruediv(copy,other)
         return copy
 
     def __idiv__(self, other):
@@ -68,7 +68,7 @@ class Diver():
             return self
         for k in other:
             if k  in self:
-                self[k] = self[k]/other[k]
+                self[k] = itruediv(self[k],other[k])
         return self
     
     def __rdiv__(self, other):
