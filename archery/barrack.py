@@ -16,8 +16,8 @@ def bowyer(_mapping_fact, _mapping_to_convert):
             _toc[k] = bowyer( _mapping_fact, v)
     return _toc
 
-def fletcher(tree, path=None):
-    """The crastsman that fletches arrows. (poor idea I know)
+def mapping_row_iter(tree, path=None):
+    """
     iterator on a tree that yield an iterator on a mapping in the form of 
     a list of ordered key that leads to the element and the value"""
     if path is None: path=[]
