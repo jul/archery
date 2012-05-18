@@ -6,6 +6,7 @@ You'll make your code perspire smartness by all its pore(c)(tm)(r).
 """
 from collections import Mapping
 from numbers import Number
+from operator import truediv
 __all__ = [ 'Adder', 'Subber', 'Muler', 'Diver' ]
 
 class Adder():
@@ -63,7 +64,7 @@ class Diver():
 
     def __idiv__(self, other):
         if isinstance(other,Number):
-            self.__iscalmul__(1.0/other)
+            self.__iscalmul__(truedive(1,other))
             return self
         for k in other:
             if k  in self:
@@ -73,7 +74,7 @@ class Diver():
     def __rdiv__(self, other):
         if isinstance(other, Number):
             copy=self.copy()
-            return copy.__iscalmul__(1/other)
+            return copy.__iscalmul__(truediv(1,other))
         return self.__div__(other)
 
 class Muler():
