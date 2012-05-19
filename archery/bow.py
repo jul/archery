@@ -5,13 +5,13 @@ All you need to shoot yourself an arrow in the knee : preconfigured class
 that seems harmless and seems to be powerfull. 
 
 """
-__all__ = [ 'Daddy', 'DDWA' ]
+__all__ = [ 'Daddy', 'DDWA']
 
 from .trait import Adder
 from .quiver import LinearAlgebrae
 from collections import defaultdict
 
-class ShortBow(Adder,defaultdict):
+class ShortBow(Adder, defaultdict):
     """Use this at your own risk.
     DDWA is the sigle for d(efault)dict with addition
     Daddy is the same class with the mnemonic for d(efault)dict with addition
@@ -28,12 +28,12 @@ class ShortBow(Adder,defaultdict):
 """
     pass
 
-class Daikyu(LinearAlgebrae, defaultdict): 
+
+class Daikyu(LinearAlgebrae, defaultdict):
     """japanese longbow"""
     pass
-    
+
+
 class LongBow():
     def __init__(self):
         raise Exception("This class is reserved for my prefered one")
-
-

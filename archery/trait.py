@@ -6,7 +6,8 @@ You'll make your code perspire smartness by all its pore(c)(tm)(r).
 """
 from collections import Mapping
 from numbers import Number
-__all__ = [ 'Adder', 'Subber', 'Muler', 'Diver' ]
+__all__ = ['Adder', 'Subber', 'Muler', 'Diver']
+
 
 class Adder():
     """ making dict able to add 
@@ -30,23 +31,23 @@ class Adder():
         copy += other
         return copy
 
-    def __iinc__(self,number):
+    def __iinc__(self, number):
         """in place increment"""
-        for k,v in self.iteritems():
+        for k, v in self.iteritems():
             self[k] += number
         return self
-        
+
     def __iadd__(self, other):
-        if not isinstance(other,Mapping):
+        if not isinstance(other, Mapping):
             self.__iinc__(other)
             return self
-            
-        for k,v in other.items() :
-            self[k] = v+self[k] if k in self else v
+
+        for k, v in other.items():
+            self[k] = v + self[k] if k in self else v
         return self
-    
+
     def __radd__(self, other):
-        copy=self.copy()
+        copy = self.copy()
         if not isinstance(other, Mapping):
             return copy.__iinc__(other)
         return copy.__iadd__(other)
@@ -62,19 +63,20 @@ class Diver():
         return copy
 
     def __idiv__(self, other):
-        if isinstance(other,Number):
+        if isinstance(other, Number):
             self.__iscalmul__(1.0 / other)
             return self
         for k in other:
             if k  in self:
-                self[k] /= 1.0 *  other
+                self[k] /= 1.0 * other
         return self
-    
+
     def __rdiv__(self, other):
         if isinstance(other, Number):
-            copy=self.copy()
-            return copy.__iscalmul__(1.0/other)
+            copy = self.copy()
+            return copy.__iscalmul__(1.0 / other)
         return self.__div__(other)
+
 
 class Muler():
     """Making dict able to multiply"""
@@ -85,26 +87,27 @@ class Muler():
         copy *= other
         return copy
 
-    def __iscalmul__(self,number):
+    def __iscalmul__(self, number):
         """in place increment"""
         for k,v in self.iteritems():
             self[k] *= number
         return self
-        
+
     def __imul__(self, other):
-        if isinstance(other,Number):
+        if isinstance(other, Number):
             self.__iscalmul__(other)
             return self
         for k in other:
-            if k  in self:
-                self[k] = other[k]*self[k]
+            if k in self:
+                self[k] = other[k] * self[k]
         return self
-    
+
     def __rmul__(self, other):
         if isinstance(other, Number):
-            copy=self.copy()
+            copy = self.copy()
             return copy.__iscalmul__(other)
         return self.__mul__(other)
+
 
 class Subber():
     def __sub__(self, other):
@@ -114,20 +117,20 @@ class Subber():
         return copy
 
     def __isub__(self, other):
-        if not isinstance(other,Mapping):
+        if not isinstance(other, Mapping):
             self.__iinc__(-other)
             return self
-        for k,v in other.items() :
-            self[k] = self[k]-v  if k in self else -v
+        for k,v in other.items():
+            self[k] = self[k] - v if k in self else -v
         return self
-    
+
     def __rsub__(self, other):
-        if not isinstance(other,Mapping):
-            copy=self.copy()
+        if not isinstance(other, Mapping):
+            copy = self.copy()
             return copy.__iinc__(-other)
         return self.__sub__(other)
     
     def __neg__(self):
         for k,v in self.iteritems():
-            self[k]*=-1
+            self[k] *= -1
         return self
