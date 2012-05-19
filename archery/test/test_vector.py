@@ -13,13 +13,14 @@ from math import sqrt
 
 class TestPath(unittest.TestCase):
     def setUp(self):
-        self.a_path = Path([e for e in xrange(10)])
+        self.a_path = Path(range(10))
 
     def test_build(self):
         self.assertEqual(
             self.a_path,
             (0, 1, 2 , 3 , 4 , 5 , 6 , 7 , 8 , 9)
         )
+
     def test_startswith(self):
         self.assertEqual(
             self.a_path.startswith(0, 1 , 2),
@@ -78,7 +79,8 @@ class TestVectorDict(unittest.TestCase):
     def test_clause_has_type(self):
         self.assertEqual(
             has_type(float)(3.0),
-            True)
+            True
+        )
 
     def test_is_leaf(self):
         """ we need a is_leaf more specialized must have a bug somewhre
@@ -90,13 +92,13 @@ class TestVectorDict(unittest.TestCase):
                 set(),
                 frozenset(),
                 list(),
-                (e for e in range(0,10)),
+                xrange(10)
                 3.0,
                 2,
                 False,
                 "ljlkjkl",
                 ]]),
-         True
+            True
          )
 
     def test_is_container(self):
@@ -107,9 +109,9 @@ class TestVectorDict(unittest.TestCase):
                 frozenset(),
                 list(),
                 VectorDict(bool, {}),
-                (e for e in range(0,10))
+                xrange(10)
                 ]]),
-         True
+            True
          )
 
     def test_match_tree(self):
@@ -127,10 +129,10 @@ class TestVectorDict(unittest.TestCase):
 
     def test_match_tree3(self):
         self.assertEqual(
-            self.cplx["b"].match_tree( 
-                dict( 
-                    c= has_type(float) ,
-                    d = anything 
+            self.cplx["b"].match_tree(
+                dict(
+                    c=has_type(float),
+                    d=anything
             )),
             True
         )
@@ -304,7 +306,7 @@ class TestVectorDict(unittest.TestCase):
                 a="lkjlkjl",
                 b=dict(
                     e=set([1 , 2 , 3]),
-                    f=lambda x , y: 2 * y,
+                    f=lambda _, y: 2 * y,
                 ),
                 p=dict(a="saint")
             )
@@ -312,8 +314,8 @@ class TestVectorDict(unittest.TestCase):
         another_lot = convert_tree(
             dict(a="lkjlkjl",
                 b=dict(
-                    e=set([ 1 , 2 , 3 ]),
-                    f=lambda x , y: 2 * y,
+                    e=set([1 , 2 , 3]),
+                    f=lambda _, y: 2 * y,
                     g=dict(),
                 ),
                 pp=dict(a="serre")
@@ -322,8 +324,8 @@ class TestVectorDict(unittest.TestCase):
         cl = Exception('CollisionError', '')
         
         self.assertRaises(
-        Exception,
-        a_lot_of_type.union, another_lot
+            Exception,
+            a_lot_of_type.union, another_lot
         )
 
     def test_union_ok(self):
@@ -351,33 +353,25 @@ class TestVectorDict(unittest.TestCase):
         )
         un = a_lot_of_type.union(another_lot)
         expected = convert_tree({
-    'a': 'lkjlkjl',
-    'p': {
-        'a': 'saint',
-    },
-    'pp': {
-        'a': 'serre',
-    },
-    'b': {
-        'i': {
-            'a': 1,
-        },
-        'e': set([1, 2, 3, 5]),
-        'g': {
-        },
-        'f': 123.123123123,
-    },
-})
-
+            'a': 'lkjlkjl',
+            'p': {'a': 'saint'},
+            'pp': {'a': 'serre'},
+            'b': {
+                'i': {'a': 1},
+                'e': set([1, 2, 3, 5]),
+                'g': {},
+                'f': 123.123123123,
+            },
+        })
         self.assertEqual(
             un,
-            expected)
+            expected
+        )
 
     def test_bug_convert_empty_mapping(self):
         """bug #8 : empty mapping intialisation dont work"""
         bug = convert_tree(dict(a={}))
         expected = VectorDict(None, {'a': {}})
-        
         self.assertEqual(
             expected,
             bug
@@ -385,14 +379,16 @@ class TestVectorDict(unittest.TestCase):
 
     def test_bug_boolean_not_commutative(self):
         """bug #11: a xor b != ! ( a xand b )"""
-        a = VectorDict(lambda : False,
+        a = VectorDict(bool,
             dict(tt=True, tf=True, ft=False, ff=False, not_in_b=False)
         )
-        b = VectorDict(lambda : False,
+        b = VectorDict(bool,
             dict(tt=True, tf=False, ft=True, ff=False, not_in_a=True)
         )
-        self.assertEqual((a & b.__not__()) | (a.__not__() & b),
-            ((a | b.__not__()) & (a.__not__() | b)).__not__())
+        self.assertEqual(
+            (a & b.__not__()) | (a.__not__() & b),
+            ((a | b.__not__()) & (a.__not__() | b)).__not__()
+        )
 
     def test_for_fun(self):
         """just for fun """
@@ -403,7 +399,7 @@ class TestVectorDict(unittest.TestCase):
         self.assertEqual(
             (a - b) * (a + b),
             aa * aa - bb * bb
-            )
+        )
 
     def test_for_fun2(self):
         """just for fun """
@@ -414,7 +410,7 @@ class TestVectorDict(unittest.TestCase):
         self.assertEqual(
             -(a + b) * (a + b),
             -1 * ((aa * aa) + 2 * aa * bb + (bb * bb))
-            )
+        )
 
 
 if __name__ == '__main__':
