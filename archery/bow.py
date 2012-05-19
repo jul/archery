@@ -13,7 +13,7 @@ from collections import defaultdict
 
 class ShortBow(Adder, defaultdict):
     """Use this at your own risk.
-    DDWA is the sigle for d(efault)dict with addition
+    DDWA is the accronym for d(efault)dict with addition
     Daddy is the same class with the mnemonic for d(efault)dict with addition
 
  >>> from archery.weapon import  Daddy 
@@ -34,6 +34,6 @@ class Daikyu(LinearAlgebrae, defaultdict):
     pass
 
 
-class LongBow():
+class LongBow(object):
     def __init__(self):
         raise Exception("This class is reserved for my prefered one")

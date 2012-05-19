@@ -9,7 +9,7 @@ from numbers import Number
 __all__ = ['Adder', 'Subber', 'Muler', 'Diver']
 
 
-class Adder():
+class Adder(object):
     """ making dict able to add 
 
  >>> from archery.trait import Adder
@@ -53,7 +53,7 @@ class Adder():
         return copy.__iadd__(other)
 
 
-class Diver():
+class Diver(object):
     """Making dict able to divide (you need to provide a muler)"""
 
     def __div__(self, other):
@@ -78,7 +78,7 @@ class Diver():
         return self.__div__(other)
 
 
-class Muler():
+class Muler(object):
     """Making dict able to multiply"""
 
     def __mul__(self, other):
@@ -109,7 +109,7 @@ class Muler():
         return self.__mul__(other)
 
 
-class Subber():
+class Subber(object):
     def __sub__(self, other):
         """suber"""
         copy = self.copy()
