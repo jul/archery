@@ -16,7 +16,7 @@ and so much more....
 """
 from .trait import Adder, Muler, Subber, Diver
 
-class LinearAlgebrae(Adder, Muler, Diver, Subber): 
+class LinearAlgebrae(Adder, Muler, Diver, Subber):
     """A set of + - * / pretty consistant"""
     pass
 
