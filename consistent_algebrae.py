@@ -13,7 +13,7 @@ from copy import deepcopy
 
 from archery.bow import Daikyu as VectorDict
 
-can_be_walked =  lambda _class : hasattr(_class,"values")
+can_be_walked = lambda _class : hasattr(_class, "values")
 
 def try_copy_or_copy(self, src, dst):
     copy = None
@@ -47,7 +47,7 @@ class ConsistentAlgebrae(object):
         
         """
         self.fail = 0
-        self.context= kw.get("context", "print" )
+        self.context= kw.get("context", "print")
         self.counter = 0
         self.success = 0
         self.neutral = None
@@ -76,13 +76,13 @@ class ConsistentAlgebrae(object):
             self.Conservation()
 
         self.finalize()
-    
+
     def EvenBetterCommutativity(self):
         self.test_fraction_consisentcy()
         self.test_div_consisentcy()
 
     def pre_test(self):
-        if "print" == self.context :
+        if "print" == self.context:
             print "\n" + "*" * 50
             print "\ntesting for  %r class\n" % (self._one.__class__.__name__)
             print " a = %r" % self._one
@@ -93,14 +93,12 @@ class ConsistentAlgebrae(object):
             print " neutral element for addition is %r " % self._neutral
             print "\n" + "*" * 50
 
-
-
     def finalize(self):
         """success or not ? """
         if "print" == self.context:
             print "*" * 50 + "\n"
             print "%(counter)r/%(success)r" % self.__dict__
-            if self.counter  == self.success and self.algebraic_logic:
+            if self.counter == self.success and self.algebraic_logic:
                 print "%r respects the linear algebrae standard rules " % (
                     self._one.__class__
                 )
@@ -114,19 +112,20 @@ class ConsistentAlgebrae(object):
             print "%(success)d/%(counter)d test passed" % ( self.__dict__ )
             if self.success == self.counter:
                 print "test PASSED"
-            else: 
+            else:
                 raise Exception("Test Failed")
 
     def fixture_and_test(method):
-        def pprint(self,method, res, left, right):
+        def pprint(self, method, res, left, right):
             print "\ntest #%d" % self.counter
             print method.__doc__
             print "%s is %s" % (method.__name__, res)
-            
+
             if "ko" == res:
                 print res
                 print "%r != %r " % (left, right)
-        def praise(self,method, res, left, right):
+
+        def praise(self, method, res, left, right):
             if "ko" == res:
                 print "FAIL"
                 print "test #%d" % self.counter
@@ -146,7 +145,7 @@ class ConsistentAlgebrae(object):
 
             res = "Arg : "
             is_equal = False
-            (left,right) = (None , None)
+            (left, right) = (None , None)
             try:
                 (left, right) = method(self, *a, **kw)
                 if self.equal:
@@ -213,7 +212,6 @@ class ConsistentAlgebrae(object):
         ### not implemented because of the float equality shit
         return self.one / 2.0, .5 * self.one
 
-
     @fixture_and_test
     def test_multiply_scalar_symmetric(self):
         """ a * other_scalar = other_scalar * a """
@@ -221,6 +219,7 @@ class ConsistentAlgebrae(object):
            self.other_scalar * self.one,
            self.one * self.other_scalar
        )
+
     @fixture_and_test
     def test_multiply_scalar_associativity(self):
         """ ( an_int + other_scalar ) a = an_int * a  + other_scalar * a """
@@ -228,6 +227,7 @@ class ConsistentAlgebrae(object):
            (self.scalar + self.other_scalar) * self.one,
            self.scalar * self.one + self.other_scalar * self.one
        )
+
     @fixture_and_test
     def test_scalar_commutativity(self):
         """ an_int * a = a * an_int """
@@ -257,7 +257,6 @@ class ConsistentAlgebrae(object):
             self.scalar * (self.one + self.other),
             self.scalar * self.one + self.scalar * self.other
         )
-
 
     @fixture_and_test
     def conservation(self):
@@ -298,6 +297,7 @@ class ConsistentAlgebrae(object):
         self.conservation()
         self.conservation_neg()
 
+
 if '__main__' == __name__:
 
     import os, sys, inspect
@@ -331,7 +331,6 @@ if '__main__' == __name__:
         one=1,
         other=2,
         another=3
-
         )
 
 
