@@ -349,14 +349,14 @@ if '__main__' == __name__:
         )
 
     ConsistentAlgebrae(
-        neutral=VectorDict(int, {}),
-        one=VectorDict(int, {"one": 1, "one_and_two": 3}),
-        other=VectorDict(int, {"one_and_two": - 1, "two": 2}),
-        another=VectorDict(int, {"one": 3, 'two':  2, "three": 1}),
+        neutral=VectorDict({}),
+        one=VectorDict({"one": 1, "one_and_two": 3}),
+        other=VectorDict({"one_and_two": - 1, "two": 2}),
+        another=VectorDict({"one": 3, 'two':  2, "three": 1}),
         collect_values=lambda x: x.values()
         )
 
-    one = VectorDict(int, {"one": 1, "one_and_two": 12})
-    other = VectorDict(int, {"one_and_two": - 9, "two": 2})
+    one = VectorDict({"one": 1, "one_and_two": 12})
+    other = VectorDict({"one_and_two": - 9, "two": 2})
 
     print "just for fun \n\t%r\n\t+\n\t%r\n\t=\n\t%r" % (one, other, one + other)

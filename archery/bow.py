@@ -4,36 +4,42 @@
 All you need to shoot yourself an arrow in the knee : preconfigured class
 that seems harmless and seems to be powerfull. 
 
+Short bows = one operator 
+long bows = one quiver
+Cross bow = algebrae + other quiver
+Japanese bows : algebrae
+European bows (common names) : proposed standard behaviour
+I think I am already short of ideas
+
 """
-__all__ = [ 'Daddy', 'DDWA']
+__all__ = [ 'Hankyu', 'Daikyu' ]
 
 from .trait import Adder
 from .quiver import LinearAlgebrae
-from collections import defaultdict
 
-class ShortBow(Adder, defaultdict):
+class Hankyu(Adder,dict):
     """Use this at your own risk.
-    DDWA is the accronym for d(efault)dict with addition
-    Daddy is the same class with the mnemonic for d(efault)dict with addition
+    Hankyu is the same class with the mnemonic for d(efault)dict with addition
 
- >>> from archery.weapon import  Daddy 
- >>> tata = Daddy( int, dict(a = 1, b = 0, c = -1 ) )
+ >>> from archery.bow import Hankyu
+ >>> tata = Hankyu( dict(a = 1, b = 0, c = -1 ) )
  >>> 
- >>> toto = Daddy( int, dict(a = 1 ) )
+ >>> toto = Hankyu( dict(a = 1 ) )
  >>> print toto+tata
- defaultdict(<type 'int'>, {'a': 2, 'c': -1, 'b': 0})
+ {'a': 2, 'c': -1, 'b': 0}
  >>> toto-=( tata+tata )
  >>> print toto
- defaultdict(<type 'int'>, {'a': -1, 'c': 2, 'b': 0})
+ {'a': -1, 'c': 2, 'b': 0}
 """
     pass
 
 
-class Daikyu(LinearAlgebrae, defaultdict):
+class Daikyu(LinearAlgebrae, dict): 
     """japanese longbow"""
     pass
-
-
-class LongBow(object):
+    
+class LongBow():
     def __init__(self):
         raise Exception("This class is reserved for my prefered one")
+
+

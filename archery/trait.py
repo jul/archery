@@ -4,8 +4,8 @@
 (any class that quacks like a dict, key like dict, and fly like a dict).
 You'll make your code perspire smartness by all its pore(c)(tm)(r).
 """
+from __future__ import division
 from collections import Mapping
-from numbers import Number
 __all__ = ['Adder', 'Subber', 'Muler', 'Diver']
 
 
@@ -25,6 +25,9 @@ class Adder(object):
  defaultdict(<type 'int'>, {'a': 2}
 
 """
+    def copy(self): 
+        return self.__class__(super(Adder, self).copy())
+
     def __add__(self, other):
         """adder"""
         copy = self.copy()
@@ -58,24 +61,27 @@ class Diver(object):
 
     def __div__(self, other):
         """diver"""
+        if not isinstance(other, Mapping):
+            copy = self.copy()
+            return copy.__iscalmul__(1 / other)
         copy = self.copy()
         copy /= other
         return copy
 
     def __idiv__(self, other):
-        if isinstance(other, Number):
-            self.__iscalmul__(1.0 / other)
+        if not isinstance(other, Mapping):
+            self.__iscalmul__(1 / other)
             return self
         for k in other:
             if k  in self:
-                self[k] /= 1.0 * other
+                self[k] /= other
         return self
 
     def __rdiv__(self, other):
-        if isinstance(other, Number):
+        if not isinstance(other, Mapping):
             copy = self.copy()
-            return copy.__iscalmul__(1.0 / other)
-        return self.__div__(other)
+            return copy.__iscalmul__(1 / other)
+        return self / other
 
 
 class Muler(object):
@@ -94,7 +100,8 @@ class Muler(object):
         return self
 
     def __imul__(self, other):
-        if isinstance(other, Number):
+        if not isinstance(other, Mapping):
+
             self.__iscalmul__(other)
             return self
         for k in other:
@@ -103,7 +110,7 @@ class Muler(object):
         return self
 
     def __rmul__(self, other):
-        if isinstance(other, Number):
+        if not isinstance(other, Mapping):
             copy = self.copy()
             return copy.__iscalmul__(other)
         return self.__mul__(other)
