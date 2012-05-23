@@ -6,13 +6,14 @@ You'll make your code perspire smartness by all its pore(c)(tm)(r).
 """
 from __future__ import division
 from collections import Mapping
-__all__ = ['Adder', 'Subber', 'Muler', 'Diver']
+__all__ = [ 'InclusiverAdder', 'InclusiveSubber', 
+    'ExclusiveMuler', 'ExclusiveDiver', 'Copier']
 
 class Copier(object):
     def copy(self): 
-        return self.__class__(super(Adder, self).copy())
+        return self.__class__(super(Copier, self).copy())
 
-class Adder(object):
+class InclusiveAdder(object):
     """ making dict able to add 
 
  >>> from archery.trait import Adder
@@ -57,7 +58,7 @@ class Adder(object):
         return copy.__iadd__(other)
 
 
-class Diver(object):
+class ExclusiveDiver(object):
     """Making dict able to divide (you need to provide a muler)"""
 
     def __div__(self, other):
@@ -85,7 +86,7 @@ class Diver(object):
         return self / other
 
 
-class Muler(object):
+class ExclusiveMuler(object):
     """Making dict able to multiply"""
 
     def __mul__(self, other):
@@ -117,7 +118,7 @@ class Muler(object):
         return self.__mul__(other)
 
 
-class Subber(object):
+class InclusiveSubber(object):
     def __sub__(self, other):
         """suber"""
         copy = self.copy()

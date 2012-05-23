@@ -14,10 +14,10 @@ I think I am already short of ideas
 """
 __all__ = [ 'Hankyu', 'Daikyu' ]
 
-from .trait import Adder
+from .trait import InclusiveAdder,Copier
 from .quiver import LinearAlgebrae
 
-class Hankyu(Adder,dict):
+class Hankyu(Copier,InclusiveAdder,dict):
     """Use this at your own risk.
     Hankyu is the same class with the mnemonic for d(efault)dict with addition
 

@@ -14,9 +14,10 @@ Hermitian Algebrae
 and so much more....
 
 """
-from .trait import Adder, Muler, Subber, Diver
+from .trait import InclusiveAdder, ExclusiveMuler
+from .trait import InclusiveSubber, ExclusiveDiver, Copier
 
-class LinearAlgebrae(Adder, Muler, Diver, Subber):
+class LinearAlgebrae(Copier,InclusiveAdder, ExclusiveMuler, ExclusiveDiver, InclusiveSubber):
     """A set of + - * / pretty consistant"""
     pass
 
