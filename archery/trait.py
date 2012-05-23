@@ -8,6 +8,9 @@ from __future__ import division
 from collections import Mapping
 __all__ = ['Adder', 'Subber', 'Muler', 'Diver']
 
+class Copier(object):
+    def copy(self): 
+        return self.__class__(super(Adder, self).copy())
 
 class Adder(object):
     """ making dict able to add 
@@ -25,8 +28,6 @@ class Adder(object):
  defaultdict(<type 'int'>, {'a': 2}
 
 """
-    def copy(self): 
-        return self.__class__(super(Adder, self).copy())
 
     def __add__(self, other):
         """adder"""
