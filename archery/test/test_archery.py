@@ -130,6 +130,7 @@ class TestDaikyu(unittest.TestCase):
             aa * aa - bb * bb
         )
 
+
     def test_for_fun2(self):
         """just for fun """
         a = self.easy
@@ -140,7 +141,17 @@ class TestDaikyu(unittest.TestCase):
             -(a + b) * (a + b),
             -1 * ((aa * aa) + 2 * aa * bb + (bb * bb))
         )
-
-
+    
+    def test_dyslexia_bug4(self):
+        """counfonding right & left in all r(div/add/sub/mul) operator """
+        a = self.easy
+        self.assertEqual(
+            2/Daikyu({'a':1}),
+            {'a' : 2}
+        )
+        self.assertEqual(
+            2-a,
+            -(a-2)
+        )
 if __name__ == '__main__':
     unittest.main(verbosity=2)
