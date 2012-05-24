@@ -15,9 +15,13 @@ and so much more....
 
 """
 from .trait import InclusiveAdder, ExclusiveMuler
-from .trait import InclusiveSubber, ExclusiveDiver, Copier
+from .trait import InclusiveSubber, TaintedExclusiveDiver, Copier
 
-class LinearAlgebrae(Copier,InclusiveAdder, ExclusiveMuler, ExclusiveDiver, InclusiveSubber):
+class LinearAlgebrae(Copier,
+    InclusiveAdder, 
+    ExclusiveMuler, 
+    TaintedExclusiveDiver, 
+    InclusiveSubber):
     """A set of + - * / pretty consistant"""
     pass
 

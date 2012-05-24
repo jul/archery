@@ -4,7 +4,7 @@
 (any class that quacks like a dict, key like dict, and fly like a dict).
 You'll make your code perspire smartness by all its pore(c)(tm)(r).
 """
-from __future__ import division
+#from __future__ import division
 from collections import Mapping
 __all__ = [ 'InclusiverAdder', 'InclusiveSubber', 
     'ExclusiveMuler', 'ExclusiveDiver', 'Copier']
@@ -58,31 +58,48 @@ class InclusiveAdder(object):
         return copy.__iadd__(other)
 
 
-class ExclusiveDiver(object):
-    """Making dict able to divide (you need to provide a muler)"""
+class TaintedExclusiveDiver(object):
+    """Making dict able to divide (you need to provide a muler)
+    This operator is tainted thanks to my inability to make neither
+    from __future__ import division
+    nor
+    from operator import truediv
+    works. 
+    So as a result I use implicit 1.0 cast
+    
+    Why don't I stick to regular (broken) python division ? 
+    Don't you think this  : 
+    0.5 * a == a / 2
+    less surprising than :
+    a/2 = something that is part /2 (if result is int),
+    and sometimes something else
+
+    )"""
 
     def __div__(self, other):
         """diver"""
         if not isinstance(other, Mapping):
             copy = self.copy()
-            return copy.__iscalmul__(1 / other)
+            return copy.__iscalmul__(1.0 / other)
         copy = self.copy()
         copy /= other
         return copy
 
     def __idiv__(self, other):
         if not isinstance(other, Mapping):
-            self.__iscalmul__(1 / other)
+            self.__iscalmul__(1.0 / other)
             return self
-        for k in other:
-            if k  in self:
-                self[k] /= other
+   
+    def __iinv__(self):
+        """in place inversion 1/a"""
+        for k,v  in self.iteritems():
+            self[k] =1.0/v 
         return self
-
+        
     def __rdiv__(self, other):
         if not isinstance(other, Mapping):
             copy = self.copy()
-            return copy.__iscalmul__(1 / other)
+            return copy.__iinv__().__iscalmul__(other)
         return self / other
 
 
@@ -136,10 +153,11 @@ class InclusiveSubber(object):
     def __rsub__(self, other):
         if not isinstance(other, Mapping):
             copy = self.copy()
-            return copy.__iinc__(-other)
+            return copy.__neg__().__iinc__(other)
         return self.__sub__(other)
     
     def __neg__(self):
+        """in place negation"""
         for k,v in self.iteritems():
             self[k] *= -1
         return self
