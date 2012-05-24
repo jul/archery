@@ -91,8 +91,6 @@ class TestDaikyu(unittest.TestCase):
         del(self.easy['z'])
         self.easy /= -1
         a_copy = self.easy.copy()
-        print self.easy
-        print a_copy
         self.easy / a_copy
         self.assertEqual(
             self.easy,
