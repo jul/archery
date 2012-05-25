@@ -14,7 +14,7 @@ I think I am already short of ideas
 """
 __all__ = [ 'Hankyu', 'Daikyu' ]
 
-from .trait import InclusiveAdder,Copier
+from .trait import InclusiveAdder,Copier, InclusiveSubber,ExclusiveMuler
 from .quiver import LinearAlgebrae
 
 class Hankyu(Copier,InclusiveAdder,dict):
@@ -37,7 +37,12 @@ class Hankyu(Copier,InclusiveAdder,dict):
 class Daikyu(LinearAlgebrae, dict): 
     """japanese longbow"""
     pass
-    
+
+class SafeDaikyu(Copier, InclusiveAdder, InclusiveSubber, ExclusiveMuler):
+    """Safe Daikyu"""
+    pass
+
+
 class LongBow():
     def __init__(self):
         raise Exception("This class is reserved for my prefered one")
