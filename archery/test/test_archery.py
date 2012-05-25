@@ -153,5 +153,13 @@ class TestDaikyu(unittest.TestCase):
             2-a,
             -(a-2)
         )
+    def test_inplace_bug5(self):
+        """a/b in place"""
+        a = self.easy*4
+        self.assertEqual(
+            a/{'x':2},
+            {'x' : 2}
+        )
+
 if __name__ == '__main__':
     unittest.main(verbosity=2)
