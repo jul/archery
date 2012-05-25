@@ -76,12 +76,12 @@ class TaintedExclusiveDiver(object):
 
     )"""
 
+
     def __div__(self, other):
         """diver"""
-        if not isinstance(other, Mapping):
-            copy = self.copy()
-            return copy.__iscalmul__(1.0 / other)
         copy = self.copy()
+        if not isinstance(other, Mapping):
+            return copy.__iscalmul__(1.0 / other)
         copy /= other
         return copy
 
@@ -89,18 +89,27 @@ class TaintedExclusiveDiver(object):
         if not isinstance(other, Mapping):
             self.__iscalmul__(1.0 / other)
             return self
+        todel=[]
+        for k in self:
+            if k in other:
+                self[k] /=  other[k]
+            else:
+                todel +=[k]
+        for k in todel: del(self[k])
+        return self
    
+
     def __iinv__(self):
         """in place inversion 1/a"""
         for k,v  in self.iteritems():
-            self[k] =1.0/v 
+            self[k] =1/v 
         return self
         
     def __rdiv__(self, other):
+        copy = self.copy()
         if not isinstance(other, Mapping):
-            copy = self.copy()
             return copy.__iinv__().__iscalmul__(other)
-        return self / other
+        return copy / other
 
 
 class ExclusiveMuler(object):
@@ -125,14 +134,15 @@ class ExclusiveMuler(object):
             return self
         for k in other:
             if k in self:
-                self[k] = other[k] * self[k]
+                self[k] *= other[k] 
         return self
 
     def __rmul__(self, other):
+        copy = self.copy()
         if not isinstance(other, Mapping):
-            copy = self.copy()
             return copy.__iscalmul__(other)
-        return self.__mul__(other)
+        return copy.__mul__(other)
+
 
 
 class InclusiveSubber(object):
@@ -151,10 +161,10 @@ class InclusiveSubber(object):
         return self
 
     def __rsub__(self, other):
+        copy = self.copy()
         if not isinstance(other, Mapping):
-            copy = self.copy()
             return copy.__neg__().__iinc__(other)
-        return self.__sub__(other)
+        return copy.__sub__(other)
     
     def __neg__(self):
         """in place negation"""
