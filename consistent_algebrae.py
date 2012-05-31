@@ -60,8 +60,8 @@ class ConsistentAlgebrae(object):
         self._one = kw["one"]
         self._other = self._other = kw["other"]
         self.equal = kw.get("equal", None)
-        self.scalar = kw.get("scalar", 3)
-        self.other_scalar = kw.get("other_scalar", 4)
+        self.scalar = kw.get("scalar", 2)
+        self.other_scalar = kw.get("other_scalar", 3)
         self.collect_values = kw.get("collect_values", lambda x: x)
 
         self.pre_test()
@@ -200,7 +200,10 @@ class ConsistentAlgebrae(object):
     @fixture_and_test
     def test_div_consisentcy(self):
         """ a * n  / 2  = a + ... + a n /2 times (n beign odd)"""
-        right = (self.one * (self.scalar * 2)) / 2
+        right = (self.one * (self.scalar * 2)) / 2.0
+        print self.scalar
+        print (self.one * (self.scalar * 2))
+        print right
         left = self.one
         for i in xrange(self.scalar - 1):
             left = left + self.one
