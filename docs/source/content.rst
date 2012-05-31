@@ -8,6 +8,7 @@ Package content
 
 archery.trait
 *************
+see: :ref:`trait`
 
 Traits are the Perl equivalent of mixins (ruby behaviour).
 The mixins in archery are dedicated to provide customisable operator on 
@@ -18,20 +19,23 @@ mapping for :
 * division,
 * multiplication
 
-*archery.trait* provides individual trait. 
+archery.trait provides individual trait. 
 
 archery.quiver
 **************
+see :ref:`quiver`
 
-A **quiver** is a set of traits lovingly assembled so that they are consistent.
+A quiver is a set of traits lovingly assembled so that they are consistent.
 
 archery.bow
 ***********
+see :ref:`bow`
 
 Ready made MutableMapping (dict) that supports addition. 
 
 archery.barrack
 ***************
+see :ref:`barrack`
 
 Misc utilities. 
 

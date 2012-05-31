@@ -10,7 +10,7 @@
 What is archery? 
 ================
 
-It is an enhancement of MutableMapping based on Mixins. It currently only offer:
+It is an enhancement of MutableMapping based on Mixins. It currently only offers:
 
 * addition;
 * substraction;
@@ -28,9 +28,10 @@ Contents:
    content
    trait
    quiver
-   weapon
+   bow
    version
    faq
+   roadmap
    :maxdepth: 2
 
 

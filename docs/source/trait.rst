@@ -1,5 +1,7 @@
+.. _trait:
+
 Traits are Mixins
-*****************
+=================
 
 Traits are Mixins, behaviours. All these terms recovers loosely the same idea.
 
@@ -16,7 +18,7 @@ I can safely use it to implement methods that don't exists and will normally wor
 
 
 General Rules:
-==============
+**************
 
 Generic behaviour
 -----------------
@@ -55,8 +57,8 @@ also that neutral element of addition, is normaly the null element of multiplica
 and keeping present in at least one dict, I prefer to avoid the raging division by zero. 
 In short, I try to avoid my dict to explode when dividing by 0. I am weak  I know.
 
-Resumé
-******
+Summary of the behaviours and dependancies
+******************************************
 
 =============== ===== ========= ================ ======= =====================
 Operation       Short Behaviour Requires         Safe    Name
@@ -68,16 +70,12 @@ Substraction    sub   Inclusive add,mul,copy     Yes     InclusiveSubber
 Division        div   Exclusive add,mul,sub,copy No      TaintedExclusiveDiver
 =============== ===== ========= ================ ======= =====================
 
+
+Caveat
+******
+
 Why is dividing unsafe?
-***********************
+-----------------------
 
 http://beauty-of-imagination.blogspot.fr/2012/05/dividing-is-not-as-easy-at-it-seems.html
-
-Do you plan on adding more trait?
-*********************************
-
-I can, I still have a lot of inspiration left in `VectorDict`_ to use. 
-
-.. _vectorDict: http://vectordict.readthedocs.org/en/latest/
-
 

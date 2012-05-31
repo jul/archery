@@ -1,3 +1,5 @@
+.. _quiver:
+
 Quivers : consistent sets of Traits
 ===================================
 

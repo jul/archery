@@ -30,7 +30,7 @@ the exisiting key of the source and destination. No values in MutableMapping wit
 
 Since traits are flexible, You or I could provide more stricts dict. 
 
-**Trait seems to provide `autovivification`_ but it does not ! No values will be created on the fly.**
+Trait seems to provide `autovivification`_ but it does not ! No values will be created on the fly.
 
 As a result, there is a conflict between defaultdict and traits : for instance with a defaultdict when you add with a value that does not exists in one of 
 the dict you should use the default factory. With actual traits, it is assumed the value is the neutral element of addition, thus having far less problems
@@ -74,8 +74,7 @@ I can use div since I don't fear losing what I am deprived of (sanity).
 Who needs archery?
 ==================
 
-* people wanting to experiment what a good addition on any MutableMapping 
-(dict included) coud be (**trait** documentation is for them);
+* people wanting to experiment what a good addition on any MutableMapping (dict included) coud be (**trait** documentation is for them);
 * people wanting to have a consistent set of operations for their MutableMapping (**quiver** is for them);
 * those who wants ready made dict pretty practical for map/reduce (**bow** is for them).
 
