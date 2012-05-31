@@ -46,7 +46,7 @@ If propagates the addition to the included bow::
     {'a': {'a': 2}}
     >>> 
 
-Haikyu
+Daikyu
 ******
 
 A dict that loves to do a lot of things : 
