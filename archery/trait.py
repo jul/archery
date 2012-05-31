@@ -88,13 +88,13 @@ class TaintedExclusiveDiver(object):
         """diver"""
         copy = self.copy()
         if not isinstance(other, MutableMapping):
-            return copy.__iscalmul__(1.0 / other)
+            return copy.__iscalmul__(1 / other)
         copy /= other
         return copy
 
     def __idiv__(self, other):
         if not isinstance(other, MutableMapping):
-            self.__iscalmul__(1.0 / other)
+            self.__iscalmul__(1 / other)
             return self
         todel=[]
         for k in self:
@@ -136,12 +136,15 @@ class ExclusiveMuler(object):
 
     def __imul__(self, other):
         if not isinstance(other, MutableMapping):
-
             self.__iscalmul__(other)
             return self
-        for k in other:
-            if k in self:
+        todel=[]
+        for k in self:
+            if k in other:
                 self[k] *= other[k] 
+            else:
+                todel+=[k]
+        for k in todel: del(self[k])
         return self
 
     def __rmul__(self, other):

@@ -24,7 +24,7 @@ def mapping_row_iter(tree, path=None):
 
     for k, v in tree.iteritems():
         if isinstance(v, Mapping):
-            for child in fletcher(v, (path + [k])):
+            for child in mapping_row_iter(v, (path + [k])):
                 yield child
         else:
             yield path + [k , v]

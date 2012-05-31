@@ -92,7 +92,7 @@ class TestVectorDict(unittest.TestCase):
                 set(),
                 frozenset(),
                 list(),
-                xrange(10)
+                xrange(10),
                 3.0,
                 2,
                 False,
