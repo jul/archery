@@ -25,3 +25,7 @@ class LinearAlgebrae(Copier,
     """A set of + - * / pretty consistant"""
     pass
 
+class SimplyAdd(Copier, InclusiveAdder): pass
+
+
+
