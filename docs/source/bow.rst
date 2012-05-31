@@ -10,7 +10,7 @@ My philosophy in testing is: check the component relying on the maximum
 of your code gives satisfaction since I should traverse most of the point
 of failure, and then I add a unittest per bug found. 
 
-Dankyu
+Hankyu
 ******
 
 A dict with addition used here : http://github.com/jul/parseweblog
