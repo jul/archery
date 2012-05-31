@@ -29,6 +29,7 @@ Contents:
    trait
    quiver
    bow
+   barrack
    version
    faq
    roadmap
