@@ -2,7 +2,9 @@ Description
 ***********
 
 It is an enhancement of MutableMapping based on Traits (Mixins).
- It currently only offers:
+It makes dict addition therefore possible. 
+
+It currently only offers:
  
 * addition;
 * substraction;
