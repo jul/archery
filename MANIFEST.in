@@ -1,4 +1,4 @@
 include archery/*py
-include consitent_*py
-include README.md
+include consistent_*py
+include README.txt
 include LICENSE.txt
