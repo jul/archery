@@ -11,7 +11,26 @@ It currently only offers:
 * multiplication;
 * division.
 
-Last but no least, it is fun.
+Quick Example
+*************
+
+ dict with addition used here : http://github.com/jul/parseweblog
+
+It instanciate like a dict::
+    >>> from archery.bow import Hankyu
+    >>> a = Hankyu(x=1,y=2,z=2)
+
+It adds :) ::
+    >>> a+a
+    {'y': 4, 'x': 2, 'z': 4}
+    >>> a+-2
+    {'y': 0, 'x': -1, 'z': 0}
+    >>> a+.5
+    {'y': 2.5, 'x': 1.5, 'z': 2.5}
+    >>> .5+a
+    {'y': 2.5, 'x': 1.5, 'z': 2.5}
+
+
 
 Resource
 ********

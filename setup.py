@@ -8,7 +8,7 @@ def test():
     """Specialized Python source builder."""
 setup(
         name='archery',
-        version='0.1.0',
+        version='0.1.1',
         author='Julien Tayon',
         author_email='julien@tayon.net',
         packages=['archery'],

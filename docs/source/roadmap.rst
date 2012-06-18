@@ -1,6 +1,16 @@
 Changelog and roadmap
 =====================
 
+Changelog
+*********
+
+0.1.0
+    initial release
+
+0.1.1
+    closing `issue5`_ : some performance issue in __iadd__ aka +=
+
+
 Convention:
 ***********
 
@@ -24,4 +34,4 @@ Roadmap
 Maybe backporting the search find and replace feature of `VectorDict`_
 
 .. _VectorDict: http://vectordict.readthedocs.org
-
+.. _issue5: https://github.com/jul/archery/issues/5
