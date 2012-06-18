@@ -55,7 +55,10 @@ class InclusiveAdder(object):
             self.__iinc__(other)
             return self
         for k, v in other.items():
-            self[k] = self[k] + v if k in self else v
+            if k in self;
+                self[k] += v
+            else:
+                self[k]=v
         return self
 
     def __radd__(self, other):
