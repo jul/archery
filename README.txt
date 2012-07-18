@@ -35,7 +35,8 @@ What's new
 **********
 
 * py3 compliance;
-* install is blocked if tests are failing
+* install is blocked if tests are failing with pip
+* install is blocked if tests are failing with easy_install
 
 Resource
 ********

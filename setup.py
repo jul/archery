@@ -13,15 +13,16 @@ def test():
     runner=unittest.TextTestRunner()
     result=runner.run(suite)
     if  not result.wasSuccessful():
-        raise Exception( "Aborting install")
+        raise Exception( "Test Failed: Aborting install")
 
-
-if "install" in sys.argv or "sdist" in sys.argv:
+print( sys.argv)
+if "install" in sys.argv or "bdist_egg" in sys.argv:
+ 
     test()
 
 setup(
         name='archery',
-        version='0.1.2',
+        version='0.1.3',
         author='Julien Tayon',
         author_email='julien@tayon.net',
         packages=['archery'],
