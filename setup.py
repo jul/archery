@@ -15,7 +15,6 @@ def test():
     if  not result.wasSuccessful():
         raise Exception( "Test Failed: Aborting install")
 
-print( sys.argv)
 if "install" in sys.argv or "bdist_egg" in sys.argv:
  
     test()
