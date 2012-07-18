@@ -4,7 +4,7 @@
 (any class that quacks like a dict, key like dict, and fly like a dict).
 You'll make your code perspire smartness by all its pore(c)(tm)(r).
 """
-#from __future__ import division
+from __future__ import division
 from collections import MutableMapping
 __all__ = [ 'InclusiveAdder', 'InclusiveSubber', 
     'ExclusiveMuler', 'TaintedExclusiveDiver', 'Copier', "IterItemsEmulator"]
@@ -17,7 +17,7 @@ class Copier(object):
             return [ x for x in self]
 
 class IterItemsEmulator(object):
-    def iteritems(self):
+    def items(self):
         for i in self:
             yield i
 
@@ -46,7 +46,7 @@ class InclusiveAdder(object):
 
     def __iinc__(self, number):
         """in place increment"""
-        for k, v in self.iteritems():
+        for k, v in self.items():
             self[k] += number
         return self
 
@@ -69,15 +69,15 @@ class InclusiveAdder(object):
 
 
 class TaintedExclusiveDiver(object):
-    """Making dict able to divide (you need to provide a muler)
+    """Making dict able to truedivide (you need to provide a muler)
     This operator is tainted thanks to my inability to make neither
-    from __future__ import division
+    from __future__ import truedivision
     nor
-    from operator import truediv
+    from operator import truetruediv
     works. 
     So as a result I use implicit 1.0 cast
     
-    Why don't I stick to regular (broken) python division ? 
+    Why don't I stick to regular (broken) python truedivision ? 
     Don't you think this  : 
     0.5 * a == a / 2
     less surprising than :
@@ -85,17 +85,24 @@ class TaintedExclusiveDiver(object):
     and sometimes something else
 
     )"""
+    def __div__(self,other):
+        return self.__truediv__(other)
 
+    def __idiv__(self,other):
+        return self.__itruediv__(other)
 
-    def __div__(self, other):
-        """diver"""
+    def __rdiv__(self,other):
+        return self.__rtruediv__(other)
+
+    def __truediv__(self, other):
+        """truediver"""
         copy = self.copy()
         if not isinstance(other, MutableMapping):
             return copy.__iscalmul__(1 / other)
         copy /= other
         return copy
 
-    def __idiv__(self, other):
+    def __itruediv__(self, other):
         if not isinstance(other, MutableMapping):
             self.__iscalmul__(1 / other)
             return self
@@ -111,11 +118,11 @@ class TaintedExclusiveDiver(object):
 
     def __iinv__(self):
         """in place inversion 1/a"""
-        for k,v  in self.iteritems():
+        for k,v  in self.items():
             self[k] =1/v 
         return self
         
-    def __rdiv__(self, other):
+    def __rtruediv__(self, other):
         copy = self.copy()
         if not isinstance(other, MutableMapping):
             return copy.__iinv__().__iscalmul__(other)
@@ -133,7 +140,7 @@ class ExclusiveMuler(object):
 
     def __iscalmul__(self, number):
         """in place increment"""
-        for k,v in self.iteritems():
+        for k,v in self.items():
             self[k] *= number
         return self
 
@@ -181,6 +188,6 @@ class InclusiveSubber(object):
     
     def __neg__(self):
         """in place negation"""
-        for k,v in self.iteritems():
+        for k,v in self.items():
             self[k] *= -1
         return self

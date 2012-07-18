@@ -39,7 +39,7 @@ class Daikyu(LinearAlgebrae, dict):
     pass
 
 class SafeDaikyu(Copier, InclusiveAdder, InclusiveSubber, ExclusiveMuler):
-    """Safe Daikyu"""
+    """Safe Daikyu without div"""
     pass
 
 
