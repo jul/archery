@@ -31,6 +31,11 @@ It adds :) ::
     {'y': 2.5, 'x': 1.5, 'z': 2.5}
 
 
+What's new
+**********
+
+* py3 compliance;
+* install is blocked if tests are failing
 
 Resource
 ********

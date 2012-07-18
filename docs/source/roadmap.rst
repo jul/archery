@@ -10,6 +10,10 @@ Changelog
 0.1.1
     closing `issue5`_ : some performance issue in __iadd__ aka +=
 
+0.1.2
+    py3 compliance
+    blocking install if tests don't pass
+
 
 Convention:
 ***********
