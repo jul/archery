@@ -7,7 +7,7 @@ You'll make your code perspire smartness by all its pore(c)(tm)(r).
 from __future__ import division
 from collections import MutableMapping
 __all__ = [ 'InclusiveAdder', 'InclusiveSubber', 
-    'ExclusiveMuler', 'TaintedExclusiveDiver', 'Copier', "IterItemsEmulator"]
+    'ExclusiveMuler', 'TaintedExclusiveDiver', 'Copier']
 
 class Copier(object):
     def copy(self): 
@@ -16,10 +16,6 @@ class Copier(object):
         else:
             return [ x for x in self]
 
-class IterItemsEmulator(object):
-    def items(self):
-        for i in self:
-            yield i
 
 class InclusiveAdder(object):
     """ making dict able to add 
