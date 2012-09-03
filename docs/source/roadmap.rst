@@ -12,8 +12,13 @@ Changelog
 
 0.1.2
     py3 compliance
+
+0.1.3
     blocking install if tests don't pass
 
+0.1.4
+    closes #6 : trying to install on debian stable is like contemplating a machine
+    frozen 5 years ago. Rerunning tests on debian
 
 Convention:
 ***********

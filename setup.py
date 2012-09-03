@@ -8,25 +8,26 @@ import sys
 
 def test():
     """Specialized Python source builder."""
+    from archery import test_archery
     loader= unittest.TestLoader()
-    suite=loader.discover(".", "test_archery.py")
+    suite=loader.loadTestsFromModule(test_archery)
     runner=unittest.TextTestRunner()
     result=runner.run(suite)
     if  not result.wasSuccessful():
         raise Exception( "Test Failed: Aborting install")
 
-if "install" in sys.argv or "bdist_egg" in sys.argv:
+if "install" in sys.argv or "sdist" in sys.argv:
  
     test()
 
 setup(
         name='archery',
-        version='0.1.3',
+        version='0.1.4',
         author='Julien Tayon',
         author_email='julien@tayon.net',
         packages=['archery'],
         url='http://archery.readthedocs.org/',
-        license='LICENSE.txt',
+        license=open('LICENSE.txt').read(),
         description='Traits (Mixins) to give +,/,-,* to MutableMapping ',
         requires=[ ],
         classifiers=[
