@@ -7,5 +7,5 @@ python:
   - "3.2"
 #install: "pip install -r requirements.txt --use-mirrors"
 #install:
-install
+install:
   - "pip install . --use-mirrors"
