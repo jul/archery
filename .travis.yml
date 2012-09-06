@@ -9,3 +9,6 @@ python:
 #install:
 install:
   - "pip install . --use-mirrors"
+script:
+### test are done in the install part ! 
+ - "echo 1"
