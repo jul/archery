@@ -22,7 +22,7 @@ if "install" in sys.argv or "sdist" in sys.argv:
 
 setup(
         name='archery',
-        version='0.1.4',
+        version='0.1.5',
         author='Julien Tayon',
         author_email='julien@tayon.net',
         packages=['archery'],
@@ -34,9 +34,12 @@ setup(
           'Development Status :: 4 - Beta',
           'Intended Audience :: Developers',
           'License :: OSI Approved :: Python Software Foundation License',
-          'Operating System :: MacOS :: MacOS X',
-          'Operating System :: Microsoft :: Windows',
-          'Operating System :: POSIX',
+          'Programming Language :: Python :: 2.6',
+          'Programming Language :: Python :: 2.7',
+          'Programming Language :: Python :: 3.2',
+          'Programming Language :: Python :: 2',
+          'Programming Language :: Python :: 3',
+          'Operating System :: OS Independent',
           'Programming Language :: Python',
           ],
 )
