@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: "utf-8" -*-
 
+#from setuptools import setup, find_packages
+#import unittest
+#import sys
 from distutils.command.build_py import build_py as _build_py
 from distutils.core import setup
 import unittest
-import sys
+#import sys
 
 def test():
     """Specialized Python source builder."""
@@ -16,7 +19,7 @@ def test():
     if  not result.wasSuccessful():
         raise Exception( "Test Failed: Aborting install")
 
-if "install" in sys.argv or "sdist" in sys.argv:
+if "install" in sys.argv or "sdist" in sys.argv or "update" in sys.argv:
  
     test()
 
@@ -29,6 +32,7 @@ setup(
         url='http://archery.readthedocs.org/',
         license=open('LICENSE.txt').read(),
         description='Traits (Mixins) to give +,/,-,* to MutableMapping ',
+        long_description=open("README.txt").read(),
         requires=[ ],
         classifiers=[
           'Development Status :: 4 - Beta',
