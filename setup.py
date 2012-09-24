@@ -7,7 +7,7 @@
 from distutils.command.build_py import build_py as _build_py
 from distutils.core import setup
 import unittest
-#import sys
+import sys
 
 def test():
     """Specialized Python source builder."""
