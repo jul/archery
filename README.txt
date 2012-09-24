@@ -14,7 +14,7 @@ It currently only offers:
 Quick Example
 *************
 
- dict with addition used here : http://github.com/jul/parseweblog
+ dict with addition used here : http://github.com/jul/yahi
 
 It instanciate like a dict::
     >>> from archery.bow import Hankyu
