@@ -20,11 +20,12 @@ def mapping_row_iter(tree, path=None):
     """
     iterator on a tree that yield an iterator on a mapping in the form of 
     a list of ordered key that leads to the element and the value"""
-    if path is None: path = []
+    if path is None: path = ()
 
     for k, v in tree.items():
         if isinstance(v, Mapping):
-            for child in mapping_row_iter(v, (path + [k])):
+            for child in mapping_row_iter(v, (path + (k,))):
                 yield child
         else:
-            yield path + [k , v]
+            yield path + (k , v)
+

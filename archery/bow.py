@@ -12,12 +12,12 @@ European bows (common names) : proposed standard behaviour
 I think I am already short of ideas
 
 """
-__all__ = [ 'Hankyu', 'Daikyu' ]
+__all__ = [ 'Hankyu', 'Daikyu', "Test" ]
 
-from .trait import InclusiveAdder,Copier, InclusiveSubber,ExclusiveMuler
+from .trait import InclusiveAdder,Copier, InclusiveSubber,ExclusiveMuler, Iterator, Searchable
 from .quiver import LinearAlgebrae
 
-class Hankyu(Copier,InclusiveAdder,dict):
+class Hankyu(Iterator, Copier,InclusiveAdder,dict):
     """Use this at your own risk.
     Hankyu is the same class with the mnemonic for d(efault)dict with addition
 
@@ -38,7 +38,7 @@ class Daikyu(LinearAlgebrae, dict):
     """japanese longbow"""
     pass
 
-class SafeDaikyu(Copier, InclusiveAdder, InclusiveSubber, ExclusiveMuler):
+class SafeDaikyu(Copier, InclusiveAdder, InclusiveSubber, ExclusiveMuler, dict):
     """Safe Daikyu without div"""
     pass
 
@@ -46,5 +46,12 @@ class SafeDaikyu(Copier, InclusiveAdder, InclusiveSubber, ExclusiveMuler):
 class LongBow():
     def __init__(self):
         raise Exception("This class is reserved for my prefered one")
+
+
+class Test(Daikyu,Searchable):
+#    def __new__(self, cls, *a, **kw):
+#       return Searchable(dict(*a,**kw))
+    pass
+
 
 

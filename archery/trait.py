@@ -6,11 +6,14 @@ You'll make your code perspire smartness by all its pore(c)(tm)(r).
 """
 from __future__ import division
 from collections import MutableMapping
+from .barrack import mapping_row_iter
 __all__ = [ 'InclusiveAdder', 'InclusiveSubber', 
-    'ExclusiveMuler', 'TaintedExclusiveDiver', 'Copier']
+    'ExclusiveMuler', 'TaintedExclusiveDiver', 'Copier', 'Iterator', 'Searchable']
 
+class Funct(funct):
+    
 class Copier(object):
-    def copy(self): 
+    def copy(self):
         if hasattr(super(Copier, self),"copy"):
             return self.__class__(super(Copier, self).copy())
         else:
@@ -117,7 +120,7 @@ class TaintedExclusiveDiver(object):
         for k,v  in self.items():
             self[k] =1/v 
         return self
-        
+
     def __rtruediv__(self, other):
         copy = self.copy()
         if not isinstance(other, MutableMapping):
@@ -159,7 +162,14 @@ class ExclusiveMuler(object):
             return copy.__iscalmul__(other)
         return copy.__mul__(other)
 
+class Iterator(object):
 
+    def __iter__(self):
+        self.__iter = mapping_row_iter(self)
+        return self.__iter
+
+    def __next__(self):
+        return self.__iter()
 
 class InclusiveSubber(object):
     def __sub__(self, other):
@@ -181,9 +191,80 @@ class InclusiveSubber(object):
         if not isinstance(other, MutableMapping):
             return copy.__neg__().__iinc__(other)
         return copy.__sub__(other)
-    
+
     def __neg__(self):
         """in place negation"""
         for k,v in self.items():
             self[k] *= -1
         return self
+
+_mark = object()
+class Searchable(Iterator):
+
+    def gu_rsearch(self, pred, tr=_mark):
+        """greedy unsafe recursive search
+        return a tuple of type path to value when predicate is match
+
+        lazy and unsafe because it is note the right way to do it
+        but lazy because it works fine.
+        for an element. """
+        if tr is _mark:
+           tr=()
+        if pred(self):
+            yield tr, self
+        for k, v in self.items():
+            if hasattr(v, "gu_rsearch"):
+                for res in v.gu_rsearch(pred, tr + (k,)):
+                    if res: yield res
+
+
+    def lu_rsearch(self, pred, tr=_mark):
+        """lazy unsafe recursive search
+        return a tuple of type path to value when predicate is match
+
+        lazy and unsafe because it is note the right way to do it
+        but lazy because it works fine.
+        for an element. """
+        if tr is _mark:
+           tr=()
+        if pred(self):
+            yield tr, self
+        else:
+            for k, v in self.items():
+                if hasattr(v, "lu_rsearch"):
+                    for res in v.lu_rsearch(pred, tr + (k,)):
+                        if res: yield res
+
+    def search(self, predicate):
+        for el in self:
+            if predicate(el):
+                yield el
+
+    def leaf_search(self, predicate_on_leaf):
+        for el in self:
+            path, value = el
+            if predicate_on_leaf(value):
+                yield value
+
+    def propagate(self, pred, funct_true, funct_false):
+        for k, v in self.items():
+            if pred(v):
+                self[k] = funct_true(v)
+            else:
+                self[k] = funct_false(v)
+            if hasattr(self[k], "propagate"):
+                self[k].propagate(pred, funct_true, funct_false)
+
+    def incr_p(self,x):
+        can_add = lambda n: hasattr(n, "__add__")
+        self.propagate(can_add, lambda n: n+x, lambda x:x)
+
+    def bless(self, _type):
+        do_nothing = lambda x : x
+        def convert(node):
+            return _type(node)
+        def has_type(node):
+            return isinstance(node, MutableMapping
+                ) and not isinstance(node,_type)
+        self.propagate(has_type, convert, do_nothing)
+

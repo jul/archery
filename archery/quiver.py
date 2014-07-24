@@ -17,7 +17,8 @@ and so much more....
 from .trait import InclusiveAdder, ExclusiveMuler
 from .trait import InclusiveSubber, TaintedExclusiveDiver, Copier
 
-class LinearAlgebrae(Copier,
+class LinearAlgebrae(
+    Copier,
     InclusiveAdder, 
     ExclusiveMuler, 
     TaintedExclusiveDiver, 
