@@ -10,8 +10,6 @@ from .barrack import mapping_row_iter
 __all__ = [ 'InclusiveAdder', 'InclusiveSubber', 
     'ExclusiveMuler', 'TaintedExclusiveDiver', 'Copier', 'Iterator', 'Searchable']
 
-class Funct(funct):
-    
 class Copier(object):
     def copy(self):
         if hasattr(super(Copier, self),"copy"):
@@ -45,7 +43,7 @@ class InclusiveAdder(object):
 
     def __iinc__(self, number):
         """in place increment"""
-        for k, v in self.items():
+        for k in self.keys():
             self[k] += number
         return self
 
@@ -57,7 +55,7 @@ class InclusiveAdder(object):
             if k in self:
                 self[k] += v
             else:
-                self[k]=v
+                self[k] = v
         return self
 
     def __radd__(self, other):
@@ -84,13 +82,13 @@ class TaintedExclusiveDiver(object):
     and sometimes something else
 
     )"""
-    def __div__(self,other):
+    def __div__(self, other):
         return self.__truediv__(other)
 
-    def __idiv__(self,other):
+    def __idiv__(self, other):
         return self.__itruediv__(other)
 
-    def __rdiv__(self,other):
+    def __rdiv__(self, other):
         return self.__rtruediv__(other)
 
     def __truediv__(self, other):
@@ -105,20 +103,20 @@ class TaintedExclusiveDiver(object):
         if not isinstance(other, MutableMapping):
             self.__iscalmul__(1 / other)
             return self
-        todel=[]
+        todel = []
         for k in self:
             if k in other:
                 self[k] /=  other[k]
             else:
-                todel +=[k]
-        for k in todel: del(self[k])
+                todel += [k]
+        for k in todel:
+            del(self[k])
         return self
-   
 
     def __iinv__(self):
         """in place inversion 1/a"""
-        for k,v  in self.items():
-            self[k] =1/v 
+        for k, v in self.items():
+            self[k] = 1/v
         return self
 
     def __rtruediv__(self, other):
@@ -139,7 +137,7 @@ class ExclusiveMuler(object):
 
     def __iscalmul__(self, number):
         """in place increment"""
-        for k,v in self.items():
+        for k in self.keys():
             self[k] *= number
         return self
 
@@ -147,13 +145,14 @@ class ExclusiveMuler(object):
         if not isinstance(other, MutableMapping):
             self.__iscalmul__(other)
             return self
-        todel=[]
+        todel = []
         for k in self:
             if k in other:
-                self[k] *= other[k] 
+                self[k] *= other[k]
             else:
-                todel+=[k]
-        for k in todel: del(self[k])
+                todel += [k]
+        for k in todel:
+            del(self[k])
         return self
 
     def __rmul__(self, other):
@@ -182,7 +181,7 @@ class InclusiveSubber(object):
         if not isinstance(other, MutableMapping):
             self.__iinc__(-other)
             return self
-        for k,v in other.items():
+        for k, v in other.items():
             self[k] = self[k] - v if k in self else -v
         return self
 
@@ -194,7 +193,7 @@ class InclusiveSubber(object):
 
     def __neg__(self):
         """in place negation"""
-        for k,v in self.items():
+        for k in self:
             self[k] *= -1
         return self
 
@@ -209,13 +208,14 @@ class Searchable(Iterator):
         but lazy because it works fine.
         for an element. """
         if tr is _mark:
-           tr=()
+            tr = ()
         if pred(self):
             yield tr, self
         for k, v in self.items():
             if hasattr(v, "gu_rsearch"):
                 for res in v.gu_rsearch(pred, tr + (k,)):
-                    if res: yield res
+                    if res:
+                        yield res
 
 
     def lu_rsearch(self, pred, tr=_mark):
@@ -226,24 +226,25 @@ class Searchable(Iterator):
         but lazy because it works fine.
         for an element. """
         if tr is _mark:
-           tr=()
+            tr = ()
         if pred(self):
             yield tr, self
         else:
             for k, v in self.items():
                 if hasattr(v, "lu_rsearch"):
                     for res in v.lu_rsearch(pred, tr + (k,)):
-                        if res: yield res
+                        if res:
+                            yield res
 
     def search(self, predicate):
         for el in self:
             if predicate(el):
                 yield el
 
-    def leaf_search(self, predicate_on_leaf):
+    def leaf_search(self, predicate):
         for el in self:
-            path, value = el
-            if predicate_on_leaf(value):
+            _, value = el
+            if predicate(value):
                 yield value
 
     def propagate(self, pred, funct_true, funct_false):
@@ -256,7 +257,7 @@ class Searchable(Iterator):
                 self[k].propagate(pred, funct_true, funct_false)
 
     def incr_p(self,x):
-        can_add = lambda n: hasattr(n, "__add__")
+        can_add = lambda v: hasattr(v, "__add__")
         self.propagate(can_add, lambda n: n+x, lambda x:x)
 
     def bless(self, _type):
