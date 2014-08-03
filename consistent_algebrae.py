@@ -8,7 +8,7 @@ and rules tested.
 
 Mainly the tests are coming out of a math book
 """
-
+from __future__ import division
 from copy import deepcopy
 
 from archery.bow import Daikyu as VectorDict
@@ -17,11 +17,13 @@ can_be_walked = lambda _class : hasattr(_class, "values")
 
 def try_copy_or_copy(self, src, dst):
     copy = None
-    if hasattr(src, "copy"):
-        copy = src.copy()
-    else:
-        copy = deepcopy(src)
-    setattr(self, dst, copy)
+    for copier in ('copy', 'deepcopy'):
+        if hasattr(src, copier):
+            copy = getattr(src, copier)()
+    if self is not None:
+        setattr(self, dst, copy or src)
+    return copy or src
+
 
 
 class ConsistentAlgebrae(object):
@@ -179,7 +181,7 @@ class ConsistentAlgebrae(object):
     def test_scalar_multiplication(self):
         """ an_int * a = a + ... + a (n times ) """
         left = self.scalar * self.one
-        right = self.one.copy()
+        right = try_copy_or_copy(None, self.one, None)
         for i in xrange(self.scalar - 1):
             right +=  self.one
         return (left, right)
@@ -200,7 +202,7 @@ class ConsistentAlgebrae(object):
     @fixture_and_test
     def test_div_consisentcy(self):
         """ a * n  / 2  = a + ... + a n /2 times (n beign odd)"""
-        right = (self.one * (self.scalar * 2)) / 2.0
+        right = (self.one * (self.scalar * 2)) / 2
         print self.scalar
         print (self.one * (self.scalar * 2))
         print right
@@ -213,7 +215,7 @@ class ConsistentAlgebrae(object):
     def test_fraction_consisentcy(self):
         """ a  / 2  = .5 * a"""
         ### not implemented because of the float equality shit
-        return self.one / 2.0, .5 * self.one
+        return self.one / 2, .5 * self.one
 
     @fixture_and_test
     def test_multiply_scalar_symmetric(self):
@@ -302,6 +304,7 @@ class ConsistentAlgebrae(object):
 
 
 if '__main__' == __name__:
+    from decimal import Decimal
 
     import os, sys, inspect
     cmd_folder = os.path.abspath(
@@ -328,6 +331,21 @@ if '__main__' == __name__:
     except Exception as e:
         print "only lamers dont use numpy"
 
+
+    ConsistentAlgebrae(
+        neutral=Decimal(0.0,3),
+        one=Decimal(1,10),
+        other=Decimal(7.0/3,4),
+        another=Decimal(3.0/8,9),
+        scalar=2,
+        )
+
+    ConsistentAlgebrae(
+        neutral=0.0,
+        one=1.0,
+        other=2.0,
+        another=3.0,
+        )
 
     ConsistentAlgebrae(
         neutral=0,
