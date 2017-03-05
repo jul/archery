@@ -25,7 +25,7 @@ if "install" in sys.argv or "sdist" in sys.argv or "update" in sys.argv:
 
 setup(
         name='archery',
-        version='0.1.5',
+        version='0.1.5b',
         author='Julien Tayon',
         author_email='julien@tayon.net',
         packages=['archery'],

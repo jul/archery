@@ -20,9 +20,14 @@ def try_copy_or_copy(self, src, dst):
     for copier in ('copy', 'deepcopy'):
         if hasattr(src, copier):
             copy = getattr(src, copier)()
+    copy_is_true=False
     if self is not None:
-        setattr(self, dst, copy or src)
-    return copy or src
+        if copy.any() if hasattr(copy, "any") else bool(copy):
+            setattr(self, dst, copy)
+            copy_is_true = True
+        else:
+            setattr(self, dst, src)
+    return copy if copy_is_true else  src
 
 
 
@@ -121,11 +126,10 @@ class ConsistentAlgebrae(object):
         def pprint(self, method, res, left, right):
             print "\ntest #%d" % self.counter
             print method.__doc__
-            print "%s is %s" % (method.__name__, res)
-
+            print "%r is %r" % (method.__name__, res)
+            #print "left %r vs right %r" % (left, right) 
             if "ko" == res:
                 print res
-                print "%r != %r " % (left, right)
 
         def praise(self, method, res, left, right):
             if "ko" == res:
@@ -183,7 +187,7 @@ class ConsistentAlgebrae(object):
         left = self.scalar * self.one
         right = try_copy_or_copy(None, self.one, None)
         for i in xrange(self.scalar - 1):
-            right +=  self.one
+            right = right +  self.one
         return (left, right)
 
     @fixture_and_test
@@ -203,9 +207,6 @@ class ConsistentAlgebrae(object):
     def test_div_consisentcy(self):
         """ a * n  / 2  = a + ... + a n /2 times (n beign odd)"""
         right = (self.one * (self.scalar * 2)) / 2
-        print self.scalar
-        print (self.one * (self.scalar * 2))
-        print right
         left = self.one
         for i in xrange(self.scalar - 1):
             left = left + self.one
@@ -320,16 +321,16 @@ if '__main__' == __name__:
 
     try:
         from numpy import array as array
-
         ConsistentAlgebrae(
             neutral=array([0, 0, 0]),
             one=array([1, 2, 3]),
             another=array([5, 2, 3]),
             other=array([3, 4, -1]),
             equal=lambda left, right: (right == left).all(),
-            )
+        )
     except Exception as e:
         print "only lamers dont use numpy"
+
 
 
     ConsistentAlgebrae(
@@ -363,10 +364,10 @@ if '__main__' == __name__:
         )
 
     ConsistentAlgebrae(
-        neutral="",
-        one="1",
-        other="2",
-        another="4"
+        neutral=complex(0,0),
+        one=complex(1,0),
+        other=complex(1,1),
+        another=complex(1,-4)
         )
 
     ConsistentAlgebrae(

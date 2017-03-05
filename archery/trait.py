@@ -5,7 +5,7 @@
 You'll make your code perspire smartness by all its pore(c)(tm)(r).
 """
 from __future__ import division
-from collections import MutableMapping
+from collections import MutableMapping, Mapping
 from .barrack import mapping_row_iter
 __all__ = [ 'InclusiveAdder', 'InclusiveSubber', 
     'ExclusiveMuler', 'TaintedExclusiveDiver', 'Copier', 'Iterator', 'Searchable']
@@ -133,10 +133,10 @@ class ExclusiveMuler(object):
         """muler"""
         copy = self.copy()
         copy *= other
-        return copy
+        return copy 
 
     def __iscalmul__(self, number):
-        """in place increment"""
+        """in place imul"""
         for k in self.keys():
             self[k] *= number
         return self
@@ -145,17 +145,23 @@ class ExclusiveMuler(object):
         if not isinstance(other, MutableMapping):
             self.__iscalmul__(other)
             return self
-        todel = []
+        todel = set()
         for k in self:
             if k in other:
                 self[k] *= other[k]
             else:
-                todel += [k]
+                todel |= {k,}
         for k in todel:
             del(self[k])
         return self
 
     def __rmul__(self, other):
+        copy = self.copy()
+        if not isinstance(other, MutableMapping):
+            return copy.__iscalmul__(other)
+        return copy.__mul__(other)
+
+    def __lmul__(self, other):
         copy = self.copy()
         if not isinstance(other, MutableMapping):
             return copy.__iscalmul__(other)
@@ -178,11 +184,15 @@ class InclusiveSubber(object):
         return copy
 
     def __isub__(self, other):
+# breaks consistency
+#        for k in self.keys():
+#            self[k] -= other
         if not isinstance(other, MutableMapping):
             self.__iinc__(-other)
             return self
         for k, v in other.items():
             self[k] = self[k] - v if k in self else -v
+
         return self
 
     def __rsub__(self, other):
