@@ -25,7 +25,7 @@ def abs(v):
     """
     return dot(v, v)**.5
 
-def cos(u, v)
+def cos(u, v):
     """Thought the cos({}, any) yielding a divided / 0 exc was a bug
     It's totally okay
     http://math.stackexchange.com/a/932454
