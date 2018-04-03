@@ -39,7 +39,7 @@ def paired_row_iter(tree, path=MARKER):
     if path is MARKER:
         path = tuple()
 
-    for k, v in tree.iteritems():
+    for k, v in tree.items():
         if isinstance(v, MutableMapping) and len(v):
             for child in paired_row_iter(v, path + (k,)):
                 yield child
