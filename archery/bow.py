@@ -12,11 +12,17 @@ European bows (common names) : proposed standard behaviour
 I think I am already short of ideas
 
 """
-__all__ = [ 'Hankyu', 'Daikyu', "Test", 'mdict' ]
+__all__ = [ 'Hankyu', 'Daikyu', "ExpDict", 'mdict' ]
 
 from .trait import InclusiveAdder,Copier, InclusiveSubber,ExclusiveMuler, Iterator, Searchable
 from .quiver import LinearAlgebrae
 from .barrack import bowyer
+
+class _Hankyu(InclusiveAdder,dict):
+    pass
+
+
+
 class Hankyu(InclusiveAdder,dict):
     """Use this at your own risk.
     Hankyu is the same class with the mnemonic for d(efault)dict with addition
@@ -33,6 +39,13 @@ class Hankyu(InclusiveAdder,dict):
 """
     pass
 
+class Hankyu(_Hankyu):
+    """Fix the broken copier
+    metaclass are hard"""
+    def copy(self):
+        return bowyer(Hankyu, self)
+
+mdict = Hankyu
 
 class _Daikyu(LinearAlgebrae, dict):
     """japanese longbow"""
@@ -43,3 +56,14 @@ class Daikyu(_Daikyu):
     metaclass are hard"""
     def copy(self):
         return bowyer(Daikyu, self)
+
+class _ExpDict(Iterator, Searchable, LinearAlgebrae, dict):
+    """japanese longbow"""
+    pass
+
+class ExpDict(_ExpDict):
+    """Fix the broken copier
+    metaclass are hard"""
+    def copy(self):
+        return bowyer(ExpDict, self)
+ 
