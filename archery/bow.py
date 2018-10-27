@@ -12,11 +12,12 @@ European bows (common names) : proposed standard behaviour
 I think I am already short of ideas
 
 """
-__all__ = [ 'Hankyu', 'Daikyu', "ExpDict", 'mdict' ]
+__all__ = [ 'Hankyu', 'Daikyu', "edict", 'mdict' ]
 
-from .trait import InclusiveAdder,Copier, InclusiveSubber,ExclusiveMuler, Iterator, Searchable
+from .trait import InclusiveAdder,Copier, InclusiveSubber,ExclusiveMuler, Iterator, Searchable, VectorDict
 from .quiver import LinearAlgebrae
 from .barrack import bowyer
+from collections import MutableMapping
 
 class _Hankyu(InclusiveAdder,dict):
     pass
@@ -45,7 +46,6 @@ class Hankyu(_Hankyu):
     def copy(self):
         return bowyer(Hankyu, self)
 
-mdict = Hankyu
 
 class _Daikyu(LinearAlgebrae, dict):
     """japanese longbow"""
@@ -57,13 +57,27 @@ class Daikyu(_Daikyu):
     def copy(self):
         return bowyer(Daikyu, self)
 
-class _ExpDict(Iterator, Searchable, LinearAlgebrae, dict):
+mdict = Daikyu
+
+class _edict(Searchable, LinearAlgebrae):
     """japanese longbow"""
     pass
 
-class ExpDict(_ExpDict):
+class edict(_edict, dict):
     """Fix the broken copier
     metaclass are hard"""
     def copy(self):
-        return bowyer(ExpDict, self)
- 
+        return bowyer(edict, self)
+
+    def convert(self):
+        return self.copy()
+
+
+class vdict(LinearAlgebrae, VectorDict, dict):
+
+    def __init__(self, *a, **kw):
+        super().__init__(*a, **kw)
+        for k, v in self.items():
+            if isinstance(v, MutableMapping):
+                self[k] = bowyer(globals()[type(self).__name__], v)
+

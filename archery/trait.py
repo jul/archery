@@ -6,17 +6,44 @@ You'll make your code perspire smartness by all its pore(c)(tm)(r).
 """
 from __future__ import division
 from collections import MutableMapping, Mapping
-from .barrack import mapping_row_iter
+from .barrack import paired_row_iter, mapping_row_iter, bowyer
 __all__ = [ 'InclusiveAdder', 'InclusiveSubber', 
     'ExclusiveMuler', 'TaintedExclusiveDiver', 'Copier', 'Iterator', 'Searchable']
 
 class Copier(object):
     def copy(self):
+        try:
+            return bowyer(self.__class__.mapping_factory, {k:v for k,v in self.items()})
+        except AttributeError:
+            pass
+        if hasattr(self,"_asdict"):
+            return self._asdict().copy()
         if hasattr(super(Copier, self),"copy"):
             return self.__class__(super(Copier, self).copy())
-        else:
-            return [ x for x in self]
+        return [ x for x in self]
 
+class VectorDict(object):
+
+    def dot(u, v):
+        """
+        scalar product of two MappableMappings (recursive)
+        """
+        return sum(v for i,v in paired_row_iter(u*v))
+
+
+    def __abs__(v):
+        """return the absolute value (hence >=0)
+        aka the distance from origin
+        """
+        return v.dot(v)**.5
+
+    def cos(u, v):
+        """Thought the cos({}, any) yielding a divided / 0 exc was a bug
+        It's totally okay
+        http://math.stackexchange.com/a/932454
+        only works for orthonormalised space, use jaccard else.
+        """
+        return u.dot(v) / abs(u) / abs(v)
 
 class InclusiveAdder(object):
     """ making dict able to add 
@@ -38,8 +65,9 @@ class InclusiveAdder(object):
     def __add__(self, other):
         """adder"""
         copy = self.copy()
-        copy.__iadd__(other)
+        copy += other
         return copy
+        
 
     def __iinc__(self, number):
         """in place increment"""
@@ -48,9 +76,9 @@ class InclusiveAdder(object):
         return self
 
     def __iadd__(self, other):
+        print(other)
         if not isinstance(other, MutableMapping):
-            self.__iinc__(other)
-            return self
+            return self.__iinc__(other)
         for k, v in other.items():
             if k in self:
                 self[k] += v
@@ -208,43 +236,8 @@ class InclusiveSubber(object):
         return self
 
 _mark = object()
+
 class Searchable(Iterator):
-
-    def gu_rsearch(self, pred, tr=_mark):
-        """greedy unsafe recursive search
-        return a tuple of type path to value when predicate is match
-
-        lazy and unsafe because it is note the right way to do it
-        but lazy because it works fine.
-        for an element. """
-        if tr is _mark:
-            tr = ()
-        if pred(self):
-            yield tr, self
-        for k, v in self.items():
-            if hasattr(v, "gu_rsearch"):
-                for res in v.gu_rsearch(pred, tr + (k,)):
-                    if res:
-                        yield res
-
-
-    def lu_rsearch(self, pred, tr=_mark):
-        """lazy unsafe recursive search
-        return a tuple of type path to value when predicate is match
-
-        lazy and unsafe because it is note the right way to do it
-        but lazy because it works fine.
-        for an element. """
-        if tr is _mark:
-            tr = ()
-        if pred(self):
-            yield tr, self
-        else:
-            for k, v in self.items():
-                if hasattr(v, "lu_rsearch"):
-                    for res in v.lu_rsearch(pred, tr + (k,)):
-                        if res:
-                            yield res
 
     def search(self, predicate):
         for el in self:
@@ -265,10 +258,6 @@ class Searchable(Iterator):
                 self[k] = funct_false(v)
             if hasattr(self[k], "propagate"):
                 self[k].propagate(pred, funct_true, funct_false)
-
-    def incr_p(self,x):
-        can_add = lambda v: hasattr(v, "__add__")
-        self.propagate(can_add, lambda n: n+x, lambda x:x)
 
     def bless(self, _type):
         do_nothing = lambda x : x

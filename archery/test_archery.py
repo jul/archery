@@ -34,9 +34,17 @@ class TestHankyu(unittest.TestCase):
     def test_add_not_exists(self):
         self.easy += dict(a=1)
         self.assertEqual(self.easy['a'], 1)
+        self.assertEqual(
+                self.easy + self.easy_too, 
+                sum([ self.easy_too, self.easy])
+        )
 
     def test_add_exists(self):
         self.easy += dict(x=1)
+        self.assertEqual(self.easy['x'] , 2)
+
+    def test_number_inc(self):
+        self.easy += 1
         self.assertEqual(self.easy['x'] , 2)
 
 

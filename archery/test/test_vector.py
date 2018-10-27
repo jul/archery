@@ -1,12 +1,20 @@
 #/usr/bin/env python
 import os
 import sys
+"""
+Because I want to port stuff I like from vector_dict to archery and kill vector_dict one day
+"""
+
 
 import unittest
-from  archery.bow import Daikyu as VectorDict
-from archery.barrack import bowyer
+from  archery import mdict
+from archery.barrack import bowyer, Path
 conv = lambda tree: VectorDict(int, tree)
 convert_tree = lambda tree: bowyer(conv, tree)
+
+
+def VectorDict(_, *a ,**kw):
+    return mdict(*a, *kw)
 
 from math import sqrt
 
