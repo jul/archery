@@ -42,7 +42,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-author = archery.__author__
+author = "julien tayon <julien@tayon.net>"
 project = u'archery'
 this_year = datetime.date.today().year
 copyright = '%s, %s' % (this_year, author)
