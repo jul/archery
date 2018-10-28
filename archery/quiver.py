@@ -15,7 +15,8 @@ and so much more....
 
 """
 from .trait import InclusiveAdder, ExclusiveMuler
-from .trait import InclusiveSubber, TaintedExclusiveDiver, Copier
+from .trait import InclusiveSubber, TaintedExclusiveDiver
+from .trait import Copier
 
 class LinearAlgebrae(
     Copier,

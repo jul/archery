@@ -1,0 +1,4 @@
+[run]
+include = archery/*
+[tool:pytest]
+addopts = --cov=archery --cov-report html :

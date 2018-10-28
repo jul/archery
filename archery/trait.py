@@ -13,8 +13,10 @@ __all__ = [ 'InclusiveAdder', 'InclusiveSubber',
 class Copier(object):
     def copy(self):
         try:
-            return bowyer(self.__class__.mapping_factory, {k:v for k,v in self.items()})
-        except AttributeError:
+            return bowyer(globals()[type(self).__name__], 
+                    {k:v for k,v in self.items()}
+            )
+        except KeyError:
             pass
         if hasattr(self,"_asdict"):
             return self._asdict().copy()
@@ -235,9 +237,11 @@ class InclusiveSubber(object):
             self[k] *= -1
         return self
 
-_mark = object()
 
 class Searchable(Iterator):
+
+    def apply(self, a_func):
+        self.propagate(lambda x: True, a_func, lambda x:x)
 
     def search(self, predicate):
         for el in self:
@@ -246,7 +250,7 @@ class Searchable(Iterator):
 
     def leaf_search(self, predicate):
         for el in self:
-            _, value = el
+            value = el[-1]
             if predicate(value):
                 yield value
 

@@ -3,11 +3,59 @@ import os
 import sys
 
 import unittest
-from  archery.bow import Hankyu, Daikyu
-from archery.barrack import bowyer
+from  archery.bow import Hankyu, Daikyu, sdict, vdict
+from archery.barrack import bowyer, Path
 
 from math import sqrt
 
+class TestSearchableDict(unittest.TestCase):
+    def setUp(self):
+        self.easy = vdict( x=1, y=1, z=0)
+        
+        self.tree = sdict(
+            a = 1,
+            b = dict(
+                c = 3.0,
+                d = dict(e=True)
+            ),
+            point = self.easy
+        )
+    
+
+    def test_rec_type(self):
+        """test that if created with another mutale mapping
+        converts it on the fly to himself"""
+        self.assertEqual(
+            type(self.tree["point"]),
+            sdict
+        )
+    
+    def test_rec_type(self):
+        """test that if created with another mutale mapping
+        converts it on the fly to himself"""
+        self.assertEqual(
+            type(self.tree["point"].copy()),
+            sdict
+        )
+
+    def test_propagate(self):
+        self.tree.propagate(
+                lambda v: type(v) in { float, int},
+                lambda v: 2 * int(v),
+                lambda v: v
+            )
+        self.assertEqual(
+                self.tree["point"]["x"],
+                2
+        )
+        self.assertEqual(
+                self.tree["b"]["c"],
+                6 
+        )
+
+
+
+        
 
 class TestHankyu(unittest.TestCase):
     def setUp(self):
@@ -170,4 +218,4 @@ class TestDaikyu(unittest.TestCase):
         )
 
 if __name__ == '__main__':
-    unittest.main(verbosity=2)
+    unittest.main(verbosity=4)

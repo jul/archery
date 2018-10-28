@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #WTFPL
+
 """test for rules of consistency in algebrae
 call the script as it is to see the result for various objects
 (int, str, list, numpy array, VectorDict)
@@ -8,7 +9,7 @@ and rules tested.
 
 Mainly the tests are coming out of a math book
 """
-from __future__ import division
+from __future__ import division, print_function
 from copy import deepcopy
 
 from archery.bow import Daikyu as VectorDict
@@ -90,54 +91,54 @@ class ConsistentAlgebrae(object):
 
     def pre_test(self):
         if "print" == self.context:
-            print "\n" + "*" * 50
-            print "\ntesting for  %r class\n" % (self._one.__class__.__name__)
-            print " a = %r" % self._one
-            print " b = %r" % self._other
-            print " c = %r" % self._another
-            print " an_int = %r " % self.scalar
-            print " other_scalar = %r " % self.other_scalar
-            print " neutral element for addition is %r " % self._neutral
-            print "\n" + "*" * 50
+            print("\n" + "*" * 50)
+            print("\ntesting for  %r class\n" % (self._one.__class__.__name__))
+            print(" a = %r" % self._one)
+            print(" b = %r" % self._other)
+            print(" c = %r" % self._another)
+            print(" an_int = %r " % self.scalar)
+            print(" other_scalar = %r " % self.other_scalar)
+            print(" neutral element for addition is %r " % self._neutral)
+            print("\n" + "*" * 50)
 
     def finalize(self):
         """success or not ? """
         if "print" == self.context:
-            print "*" * 50 + "\n"
-            print "%(counter)r/%(success)r" % self.__dict__
+            print("*" * 50 + "\n")
+            print("%(counter)r/%(success)r" % self.__dict__)
             if self.counter == self.success and self.algebraic_logic:
-                print "%r respects the linear algebrae standard rules " % (
+                print("%r respects the linear algebrae standard rules " % (
                     self._one.__class__
-                )
+                ))
 
             else:
-                print "%r follows the dutch logic " % (
+                print("%r follows the dutch logic " % (
                 self._one.__class__
-            )
-            print "\n" + "*" * 50
+            ))
+            print("\n" + "*" * 50)
         else:
-            print "%(success)d/%(counter)d test passed" % ( self.__dict__ )
+            print("%(success)d/%(counter)d test passed" % ( self.__dict__ ))
             if self.success == self.counter:
-                print "test PASSED"
+                print("test PASSED")
             else:
                 raise Exception("Test Failed")
 
     def fixture_and_test(method):
         def pprint(self, method, res, left, right):
-            print "\ntest #%d" % self.counter
-            print method.__doc__
-            print "%r is %r" % (method.__name__, res)
-            #print "left %r vs right %r" % (left, right) 
+            print("\ntest #%d" % self.counter)
+            print(method.__doc__)
+            print("%r is %r" % (method.__name__, res))
+            #print("left %r vs right %r" % (left, right) )
             if "ko" == res:
-                print res
+                print(res)
 
         def praise(self, method, res, left, right):
             if "ko" == res:
-                print "FAIL"
-                print "test #%d" % self.counter
-                print method.__doc__
-                print "%r != %r " % (left, right)
-                print "%r" % res
+                print("FAIL")
+                print("test #%d" % self.counter)
+                print(method.__doc__)
+                print("%r != %r " % (left, right))
+                print("%r" % res)
                 self.fail += 1
 
         def reinit_me(self, *a, **kw):
@@ -186,7 +187,7 @@ class ConsistentAlgebrae(object):
         """ an_int * a = a + ... + a (n times ) """
         left = self.scalar * self.one
         right = try_copy_or_copy(None, self.one, None)
-        for i in xrange(self.scalar - 1):
+        for i in range(self.scalar - 1):
             right = right +  self.one
         return (left, right)
 
@@ -208,7 +209,7 @@ class ConsistentAlgebrae(object):
         """ a * n  / 2  = a + ... + a n /2 times (n beign odd)"""
         right = (self.one * (self.scalar * 2)) / 2
         left = self.one
-        for i in xrange(self.scalar - 1):
+        for i in range(self.scalar - 1):
             left = left + self.one
         return left, right
 
@@ -329,17 +330,20 @@ if '__main__' == __name__:
             equal=lambda left, right: (right == left).all(),
         )
     except Exception as e:
-        print "only lamers dont use numpy"
+        print("numpy is great, sniff")
 
 
 
-    ConsistentAlgebrae(
-        neutral=Decimal(0.0,3),
-        one=Decimal(1,10),
-        other=Decimal(7.0/3,4),
-        another=Decimal(3.0/8,9),
-        scalar=2,
-        )
+    try:
+        ConsistentAlgebrae(
+            neutral=Decimal(0.0,3),
+            one=Decimal(1,10),
+            other=Decimal(7.0/3,4),
+            another=Decimal(3.0/8,9),
+            scalar=2,
+            )
+    except TypeError:
+        print("I guess Decimal API changed between py2/3")
 
     ConsistentAlgebrae(
         neutral=0.0,
@@ -375,10 +379,11 @@ if '__main__' == __name__:
         one=VectorDict({"one": 1, "one_and_two": 3}),
         other=VectorDict({"one_and_two": - 1, "two": 2}),
         another=VectorDict({"one": 3, 'two':  2, "three": 1}),
-        collect_values=lambda x: x.values()
+        collect_values=lambda x: x.values(),
+        context = {"print" : False},
         )
 
     one = VectorDict({"one": 1, "one_and_two": 12})
     other = VectorDict({"one_and_two": - 9, "two": 2})
 
-    print "just for fun \n\t%r\n\t+\n\t%r\n\t=\n\t%r" % (one, other, one + other)
+    print("just for fun \n\t%r\n\t+\n\t%r\n\t=\n\t%r" % (one, other, one + other))
