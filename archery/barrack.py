@@ -82,6 +82,7 @@ class Path(tuple):
         return Path(self[:-1])
 
 def make_from_path(a_dict, path):
+    """Experimental: convert a path in a mapping"""
     path = list(path)
     value = path.pop()
     last_key = path.pop()
@@ -92,30 +93,6 @@ def make_from_path(a_dict, path):
         mapping = tmap({_next : mapping })
     return mapping
 
-def set_from(a_dict, *paths):
-    for path in paths:
-        print(path)
-        path = list(path)
-        finished = False
-        while not finished and len(path)>2:
-            k = path.pop(0)
-            if k in a_dict:
-                print("j>" + str(k))
-                print(path)
-                print(a_dict)
-                a_dict[k] = set_from(a_dict, path)
-            else:
-                a_dict[k] = make_from_path(a_dict, path)
-                finished = True
-                print("<" + str(k))
-                print(a_dict)
-                print("<")
-        if not finished:
-            a_dict[path[-2]] = path[-1]
-    return a_dict
-        
-        
-                        
 def bowyer(_mapping_fact, _mapping_to_convert):
     """the craftsman that makes bow
     A function that given a function in the form 

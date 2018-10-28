@@ -19,3 +19,4 @@ install:
 script:
 ### test are done in the install part ! 
  - nosetests -v --with-coverage archery/test_archery.py
+ - nosetests -v --with-coverage archery/test_fun.py
