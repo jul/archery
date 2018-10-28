@@ -6,6 +6,9 @@
 #import sys
 from distutils.command.build_py import build_py as _build_py
 from distutils.core import setup
+from archery import __version__
+from archery import __author__
+from archery import __author_email__
 import unittest
 import sys
 
@@ -25,9 +28,9 @@ if "install" in sys.argv or "sdist" in sys.argv or "update" in sys.argv:
 
 setup(
         name='archery',
-        version='0.1.7',
-        author='Julien Tayon',
-        author_email='julien@tayon.net',
+        version=__version__,
+        author=__author__,
+        author_email=__author_email__,
         packages=['archery'],
         url='http://archery.readthedocs.org/',
         license=open('LICENSE.txt').read(),

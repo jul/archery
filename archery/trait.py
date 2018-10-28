@@ -78,7 +78,6 @@ class InclusiveAdder(object):
         return self
 
     def __iadd__(self, other):
-        print(other)
         if not isinstance(other, MutableMapping):
             return self.__iinc__(other)
         for k, v in other.items():

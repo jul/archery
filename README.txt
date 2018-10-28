@@ -21,8 +21,8 @@ Quick Example
  dict with addition used here : http://github.com/jul/yahi
 
 It instanciate like a dict::
-    >>> from archery.bow import Hankyu
-    >>> a = Hankyu(x=1,y=2,z=2)
+    >>> from archery import mdict
+    >>> a = mdict(x=1,y=2,z=2)
 
 It adds :) ::
     >>> a+a
@@ -35,12 +35,6 @@ It adds :) ::
     {'y': 2.5, 'x': 1.5, 'z': 2.5}
 
 
-What's new
-**********
-
-* py3 compliance;
-* install is blocked if tests are failing with pip
-* install is blocked if tests are failing with easy_install
 
 Resource
 ********

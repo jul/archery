@@ -17,7 +17,17 @@ It is an enhancement of MutableMapping based on Mixins. It currently only offers
 * multiplication;
 * division. 
 
-Last but no least, it is fun.
+And also mixins for:
+
+* searching
+
+Or treating dict as vectors giving them:
+
+* norms (abs)
+* cosine
+* dot product
+
+
 
 Detailed documentation
 ======================
@@ -26,11 +36,10 @@ Contents:
 
 .. toctree::
    content
+   bow
    trait
    quiver
-   bow
    barrack
-   version
    faq
    roadmap
    :maxdepth: 2

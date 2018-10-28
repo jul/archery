@@ -1,67 +1,48 @@
 .. _bow:
 
-Bow: how not to shoot yourself an arrow in the knee
-===================================================
+Bow Specialized dict ready to use based on quivers
+==================================================
 
-The only reason to use a bow is either you are lazy, or you noticed
-I only test these. This is the most tested part of the code yet. 
+vdict
+-----
 
-My philosophy in testing is: check the component relying on the maximum
-of your code gives satisfaction since I should traverse most of the point
-of failure, and then I add a unittest per bug found. 
+A dict that supports cosine, abs, dot product::
 
-Hankyu
-******
+   >>> from archery import vdict as Point
+   >>> 
+   >>> u = Point(x=1, y=1)
+   >>> v = Point(x=1, y=0)
+   >>> u.cos(v)
+   >>> 0.7071067811865475
+   >>> u.dot(v)
+   >>> 1
+   >>> u.cos(2*v)
+   >>> 0.7071067811865475
+   >>> u.dot(2*v)
+   >>> 2
+   >>> abs(u)
+   >>> 1.4142135623730951
+   >>> u3 = Point(x=1, y=1, z=2)
+   >>> u4 = Point(x=1, y=3, z=4)
+   >>> u3 + u4
+   >>> dict(x=2, y=4, z=6)
+   >>> assert u4 + u4 == 2*u4
+   
 
-A dict with addition used here : http://github.com/jul/parseweblog
+mdict (former Daikyu)
+---------------------
 
-It instanciate like a dict::
-    >>> from archery.bow import Hankyu
-    >>> a = Hankyu(x=1,y=2,z=2)
+Mnemonic for multiplicative dict that can
 
-It adds :) ::
-    >>> a+a
-    {'y': 4, 'x': 2, 'z': 4}
-    >>> a+-2
-    {'y': 0, 'x': -1, 'z': 0}
-    >>> a+.5
-    {'y': 2.5, 'x': 1.5, 'z': 2.5}
-    >>> .5+a
-    {'y': 2.5, 'x': 1.5, 'z': 2.5}
-
-It adds everything consistent with your value::
-
-    >>> a = Hankyu(data=[1,2],sample=1)
-    >>> b = Hankyu(data=[3,4],sample=1)
-    >>> a+b
-    {'sample': 2, 'data': [1, 2, 3, 4]}
-
-If propagates the addition to the included bow::
-    >>> a=Hankyu(a=Hankyu(a=1))
-    >>> b=Hankyu(a=Hankyu(a=2))
-    >>> a+b
-    {'a': {'a': 3}}
-    >>> a+=1
-    >>> a
-    {'a': {'a': 2}}
-    >>> 
-
-Daikyu
-******
-
-A dict that loves to do a lot of things : 
 * addition;
 * substraction;
 * multiplication;
 * division (please, please be careful).
 
-Simple algebrae
----------------
-
 It instanciates like a dict:
-    >>> from archery.bow import Daikyu
-    >>> b=Daikyu(x=2, z=-1)
-    >>> a=Daikyu(x=1, y=2.0)
+    >>> from archery import mdict
+    >>> b=mdict(x=2, z=-1)
+    >>> a=mdict(x=1, y=2.0)
     >>> a+b
     # OUT: {'y': 2.0, 'x': 3, 'z': -1}
     >>> b-a
@@ -105,17 +86,21 @@ Mixing scalars and records
 --------------------------
 
 My prefered part :) ::
-    >>> 2*Daikyu(x=1, y="lo",z=[2])
+
+    >>> 2*mdict(x=1, y="lo",z=[2])
     {'y': 'lolo', 'x': 2, 'z': [2, 2]}
-    >>> Daikyu(y=1, z=1)*Daikyu(x=1, y="lo",z=[2])*2
+    >>> mdict(y=1, z=1)*Daikyu(x=1, y="lo",z=[2])*2
     {'y': 'lolo', 'z': [2, 2]}
-    >>> a=Daikyu(dictception=Daikyu(a=1,b=2), sample = 1, data=[1,2])
-    >>> b=Daikyu(dictception=Daikyu(c=-1,b=2), sample = 2, data=[-1,-2])
+    >>> a=mdict(dictception=dict(a=1,b=2), sample = 1, data=[1,2])
+    >>> b=mdict(dictception=dict(c=-1,b=2), sample = 2, data=[-1,-2])
     >>> a+b
     {'sample': 3, 'dictception': {'a': 1, 'c': -1, 'b': 4}, 'data': [1, 2, -1, -2]}
-    >>> Daikyu(dictception=1, sample=1)* a*b
+    >>> mdict(dictception=1, sample=1)* a*b
     {'sample': 2, 'dictception': {'b': 4}}
 
+Whatever meanings you gave to + it propagates the meaning.
+For algebraic use I recommend to use algebraic types (complex, numpy arrays,
+floats, int).
 
 
 

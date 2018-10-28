@@ -9,8 +9,11 @@ from .bow import Daikyu as mdict, vdict
 from .bow import edict
 from .barrack import paired_row_iter, bowyer
 __version__ = "0.1.7"
+__author__ = "julien tayon"
+__author_email__ = "julien@tayon.net"
 __all__ = [
-    "__version__", "dot", "abs", "cos", "mdict", "paired_row_iter", "edict" ]
+    "__version__", "vdict","sdict", "mdict", "paired_row_iter", 
+    "__author__", "__author_email__"]
 
 
 

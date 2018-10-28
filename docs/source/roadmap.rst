@@ -4,6 +4,8 @@ Changelog and roadmap
 Changelog
 *********
 
+
+
 0.1.6
     Tested py3.2 on my freeBSD, it works for me ©
 
