@@ -14,9 +14,10 @@ Hermitian Algebrae
 and so much more....
 
 """
-from .trait import InclusiveAdder, ExclusiveMuler
+from .trait import InclusiveAdder, ExclusiveMuler, Vector
 from .trait import InclusiveSubber, TaintedExclusiveDiver
 from .trait import Copier
+
 
 class LinearAlgebrae(
     Copier,
@@ -29,5 +30,10 @@ class LinearAlgebrae(
 
 class SimplyAdd(Copier, InclusiveAdder): pass
 
+class VectorDict(
+        LinearAlgebrae,
+        Vector
+    ):
+    pass
 
 

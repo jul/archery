@@ -24,7 +24,7 @@ class Copier(object):
             return self.__class__(super(Copier, self).copy())
         return [ x for x in self]
 
-class VectorDict(object):
+class Vector(object):
 
     def dot(u, v):
         """

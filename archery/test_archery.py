@@ -6,7 +6,29 @@ import unittest
 from  archery.bow import Hankyu, Daikyu, sdict, vdict
 from archery.barrack import bowyer, Path
 
-from math import sqrt
+from math import sqrt, cos, pi
+
+
+
+class TestVectorDict(unittest.TestCase):
+    """test a dict with Vector properies (cos, dot, abs)"""
+
+    def setUp(self):
+        self.point = vdict( x=3, y=3, z=0)
+        self.point2 = vdict( x=1, y=1, z=1)
+    
+    def testNorm(self):
+        self.assertAlmostEqual(
+                abs(self.point),
+                sqrt(3*3+3*3)
+        )
+    def testCos(self):
+        self.assertAlmostEqual(
+                vdict(x=1,y=0).cos(vdict(x=1,y=1)),
+                cos(pi/4)
+        )
+
+
 
 class TestSearchableDict(unittest.TestCase):
     def setUp(self):
@@ -22,14 +44,6 @@ class TestSearchableDict(unittest.TestCase):
         )
     
 
-    def test_rec_type(self):
-        """test that if created with another mutale mapping
-        converts it on the fly to himself"""
-        self.assertEqual(
-            type(self.tree["point"]),
-            sdict
-        )
-    
     def test_rec_type(self):
         """test that if created with another mutale mapping
         converts it on the fly to himself"""
@@ -53,6 +67,37 @@ class TestSearchableDict(unittest.TestCase):
                 6 
         )
 
+    def test_apply(self):
+        self.tree.apply(lambda x : x+1)
+        self.assertEqual(
+            self.tree["b"]["c"],
+            5.0
+        )
+        self.assertEqual(
+            self.tree["b"]["d"]["e"],
+            4
+        )
+
+    def test_search(self):
+        self.assertEqual(
+                set([ x for x in self.tree.search(
+                    lambda x : Path(x).contains("point","x") 
+                        or Path(x).endswith(3.0)
+                    )
+                ]),
+                set([('b', 'c', 3.0), ('point', 'x', 1)])
+        )
+
+    def test_leaf_search(self):
+        self.assertEqual(
+                [ i for i in self.tree.leaf_search(lambda x : type(x) is  float)],
+                [ 3.0 ]
+        )
+        self.assertEqual(
+                [ i for i in self.tree.leaf_search(lambda x : type(x) is  bool)],
+                [ True ]
+        )
+        
 
 
         

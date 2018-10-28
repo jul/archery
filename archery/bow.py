@@ -16,11 +16,10 @@ __all__ = [ 'Hankyu', 'Daikyu', "edict", 'mdict' ]
 
 from .trait import (
         InclusiveAdder, InclusiveSubber, ExclusiveMuler, 
-        Iterator, Searchable, VectorDict
+        Iterator, Searchable 
     )
-from .quiver import LinearAlgebrae
+from .quiver import LinearAlgebrae, VectorDict
 from .barrack import bowyer
-import six
 from collections import MutableMapping
 
 
@@ -77,7 +76,7 @@ mdict = Daikyu
 
 
 
-class vdict(LinearAlgebrae, RecIniter, VectorDict, dict):
+class vdict(RecIniter, VectorDict, dict):
     mapping = dict
 
 class _sdict(Searchable, LinearAlgebrae, RecIniter, dict):
