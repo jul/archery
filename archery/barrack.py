@@ -9,18 +9,18 @@ from collections import MutableMapping
 MARKER=object()
 
 class Path(tuple):
-    def __init__(self, a_tuple):
-        """construct a Path from a tuple or a list 
+#    def __init__(self, a_tuple):
+#        """construct a Path from a tuple or a list 
         
- >>> p = Path( [  'a', 'b', 'c' ] )
- >>> p
- >>> ( 'a', 'b', 'c' )
- >>> p = Path( (  'a', 'b', 'c' ) )
- >>> p
- >>> ( 'a', 'b', 'c' )
-        """
-        self += tuple(a_tuple)
-
+# >>> p = Path( [  'a', 'b', 'c' ] )
+# >>> p
+# >>> ( 'a', 'b', 'c' )
+# >>> p = Path( (  'a', 'b', 'c' ) )
+# >>> p
+# >>> ( 'a', 'b', 'c' )
+#        """
+#        self += tuple(a_tuple)
+#
     def endswith( self, *a_tuple ):
         """check if path ends with the consecutive given has argumenbts value
  
@@ -75,6 +75,46 @@ class Path(tuple):
        """
        return self._contains( a_tuple )
 
+    def value(self):
+        return self[-1]
+
+    def key(self):
+        return Path(self[:-1])
+
+def make_from_path(a_dict, path):
+    path = list(path)
+    value = path.pop()
+    last_key = path.pop()
+    tmap = type(a_dict)
+    mapping = tmap({last_key : value})
+    while path:
+        _next = path.pop()
+        mapping = tmap({_next : mapping })
+    return mapping
+
+def set_from(a_dict, *paths):
+    for path in paths:
+        print(path)
+        path = list(path)
+        finished = False
+        while not finished and len(path)>2:
+            k = path.pop(0)
+            if k in a_dict:
+                print("j>" + str(k))
+                print(path)
+                print(a_dict)
+                a_dict[k] = set_from(a_dict, path)
+            else:
+                a_dict[k] = make_from_path(a_dict, path)
+                finished = True
+                print("<" + str(k))
+                print(a_dict)
+                print("<")
+        if not finished:
+            a_dict[path[-2]] = path[-1]
+    return a_dict
+        
+        
                         
 def bowyer(_mapping_fact, _mapping_to_convert):
     """the craftsman that makes bow
