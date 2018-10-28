@@ -1,3 +1,7 @@
+.. image:: https://travis-ci.org/jul/archery.svg?branch=master
+    :target: https://travis-ci.org/jul/archery
+
+
 Description
 ***********
 
