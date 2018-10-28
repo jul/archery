@@ -5,8 +5,7 @@
 
 """
 
-from .bow import Daikyu as mdict, vdict
-from .bow import edict
+from .bow import Daikyu as mdict, vdict, sdict
 from .barrack import paired_row_iter, bowyer
 __version__ = "0.1.7"
 __author__ = "julien tayon"
