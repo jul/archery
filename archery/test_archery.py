@@ -94,6 +94,11 @@ class TestBugWeired(unittest.TestCase):
             acos(alien.cos(rotation_maker(pi/4)(alien)))/2 / pi * 360,
             54.73561031724534
         )
+        self.assertAlmostEqual(
+            rotation_maker(pi/4)(alien),
+{'x': {'x': 1.1102230246251565e-16, 'y': 1.4142135623730951}, 'y': {'x': -1.1102230246251565e-16, 'y': 1.414213562373095}}
+        )
+
         self.assertAlmostEqual(rotation_maker(pi/4)(alien),
             {'x':
                 {'x': 1.1102230246251565e-16, 'y': 1.4142135623730951},

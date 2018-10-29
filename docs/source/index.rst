@@ -54,8 +54,7 @@ following this inheritance graph of traits
 
        }
        Muler ->  mdict [label = "concrete class dict" ];
-       mdict -> vdict [label = "derived from mdict" ];
-       Cos -> vdict;
+       Cos -> vdict [label = "concrete class dict" ];
        search -> sdict [label = "concrete class dict" ];
 
 

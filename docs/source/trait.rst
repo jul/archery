@@ -27,8 +27,6 @@ The Operation is propagated for each keys of both Mappings and will be propagate
 If the values are MutableMapping with the operation they will propagate.
 If the values are not MutableMapping with the trait, the operation will apply in place. 
 
-.. warning:: If your MutableMapping with Addition is made of MutableMapping
-   without it, you'll have a problem. To solve the problem use :ref:`bowyer`_
 
 
 Scalar Operations

@@ -32,7 +32,7 @@ setup(
         author_email=__author_email__,
         packages=['archery'],
         url='http://archery.readthedocs.org/',
-        license=open('LICENSE.txt').read(),
+        license="Python Software Foundation License",
         description='Traits (Mixins) to give +,/,-,* to MutableMapping ',
         long_description=open("README.txt").read(),
         requires=[ ],
