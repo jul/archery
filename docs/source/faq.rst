@@ -2,7 +2,7 @@ Misc interesting questions
 **************************
 
 What is addition in MutableMapping useful for?
-=======================================
+==============================================
 
 It is used with `parseweblog`_ as an exemple. I find addition
 on MutableMapping a very convenient way to reduce by using in place addition (__iadd__). 

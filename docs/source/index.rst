@@ -12,21 +12,56 @@ What is archery?
 
 It is an enhancement of MutableMapping based on Mixins. It currently only offers:
 
-* addition;
-* substraction;
-* multiplication;
-* division. 
+- Linear Algebrae;
+- Vector like metrics;
+- Searchable behaviour;
 
-And also mixins for:
+for convenience 3 usable classes are offered as a an helper : 
 
-* searching
+- mdict (dict that follow the rules of linear algebrae based on dict);
+- vdict (dict that have cos, abs, dot product);
+- sdict (dict that are easily searchable);
 
-Or treating dict as vectors giving them:
+following this inheritance graph of traits
 
-* norms (abs)
-* cosine
-* dot product
 
+.. graphviz::
+
+    digraph G {
+        node [ shape=box ];
+        splines=ortho;
+
+       subgraph cluster_0 {
+           label = "LinearAlgebrae";
+           style=line;
+           color=green;
+           Adder -> Muler [label = "a+.+a (n) = a * n"];
+           Diver -> Muler [label = "a/n = a * 1/n" ];
+           Suber -> Muler [label = "a-n = a * -n "];
+       }
+       subgraph cluster_1 {
+           Dot -> Abs -> Cos;
+           style=line;
+           label = "Vector";
+           color=blue;
+       }
+       Muler -> Dot;
+       subgraph cluster_3 {
+           label = "Searchable";
+           color = red;
+           iter [ label = "__iter__"];
+           iter -> search ;
+
+       }
+       Muler ->  mdict [label = "concrete class dict" ];
+       mdict -> vdict [label = "derived from mdict" ];
+       Cos -> vdict;
+       search -> sdict [label = "concrete class dict" ];
+
+
+    }
+
+Feel free to build your own as shown in examples with Counter.
 
 
 Detailed documentation
