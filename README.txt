@@ -4,7 +4,6 @@
 .. image:: https://badge.fury.io/py/archery.svg
     :target: https://badge.fury.io/py/archery
 
-
 .. image:: https://codecov.io/gh/jul/archery/branch/master/graph/badge.svg
   :target: https://codecov.io/gh/jul/archery
 
