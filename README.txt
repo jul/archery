@@ -7,6 +7,11 @@
 .. image:: https://codecov.io/gh/jul/archery/branch/master/graph/badge.svg
   :target: https://codecov.io/gh/jul/archery
 
+.. image:: https://readthedocs.org/projects/archery/badge/?version=latest
+    :target: https://archery.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
+
 .. image:: https://img.shields.io/badge/py2.7|3.3|3.4|3.5|3.6|3.7-ok-brightgreen.svg
 
 Description
