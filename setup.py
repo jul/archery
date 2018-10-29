@@ -23,7 +23,6 @@ def test():
         raise Exception( "Test Failed: Aborting install")
 
 if "install" in sys.argv or "sdist" in sys.argv or "update" in sys.argv:
- 
     test()
 
 setup(

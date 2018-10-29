@@ -2,13 +2,22 @@
 import os
 import sys
 
+import warnings
 import unittest
-from  archery.bow import Hankyu, Daikyu, sdict, vdict
+from  archery.bow import Hankyu, Daikyu, sdict, vdict, mdict, edict
 from archery.barrack import bowyer, Path
 
-from math import sqrt, cos, pi
+from math import sqrt, cos, pi, sin, acos
 
-
+class TestDeprecation(unittest.TestCase):
+    def test_deprec_edict(self):
+        """ edict (ExpDict is becoming searchable """
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter('always')
+            edict(x=1)
+            self.assertTrue(
+                issubclass(w[-1].category, DeprecationWarning),
+            )
 
 class TestVectorDict(unittest.TestCase):
     """test a dict with Vector properies (cos, dot, abs)"""
@@ -28,6 +37,67 @@ class TestVectorDict(unittest.TestCase):
                 cos(pi/4)
         )
 
+class TestBugWeired(unittest.TestCase):
+
+    def test_stay_same(self):
+
+        class Matrix(mdict):
+            def __call__(self, other):
+                other = other.copy()
+                res= vdict()
+                for (src, dst), functor in self.items():
+                    res += mdict({ dst: functor(other[src])})
+                return res
+
+
+        theta = pi/6
+
+        u = mdict(x=1, y=2)
+        v = mdict(x=1, y=0)
+        alien = vdict(x=u, y=v)
+
+        def rotation_maker(theta):
+            """"Matrix takes as key (SRC, DST) (which is the opposite of "actual notation")
+            """
+            return Matrix({
+                ("x", "x") : lambda v:1.0 *  v * cos(theta),
+                ("y", "x") : lambda v:1.0 * -v * sin(theta),
+                ("x", "y") : lambda v:1.0 *  v * sin(theta),
+                ("y", "y") : lambda v:1.0 *  v * cos(theta)
+            })
+
+        rotation = rotation_maker(pi/6)
+        self.assertAlmostEqual(
+            rotation(u),
+            {'x': -0.13397459621556118, 'y': 2.232050807568877}
+            )
+# OUT:{'x': 1, 'y': 0}
+        self.assertAlmostEqual(rotation(v),
+            {'x': 0.8660254037844387, 'y': 0.49999999999999994}
+        )
+        self.assertAlmostEqual(
+            acos(vdict(u).cos(vdict(rotation(u))))/2 / pi * 360,
+            29.999999999999993
+        )
+        self.assertEqual(u, dict(x=1, y=2))
+        self.assertAlmostEqual(acos(vdict(v).cos(vdict(rotation_maker(pi/3)(v))))/2 / pi * 360,
+60.0)
+        self.assertAlmostEqual(
+            acos(vdict(v).cos(vdict(rotation_maker(pi/5)(v))))/2 / pi * 360,
+            36.0
+        )
+        self.assertEqual(
+            alien,
+            {'x': {'x': 1, 'y': 2}, 'y': {'x': 1, 'y': 0}}
+        )
+        self.assertAlmostEqual(
+            acos(alien.cos(rotation_maker(pi/4)(alien)))/2 / pi * 360,
+            54.73561031724534
+        )
+        self.assertAlmostEqual(rotation_maker(pi/4)(alien),
+            {'x':
+                {'x': 1.1102230246251565e-16, 'y': 1.4142135623730951},
+             'y': {'x': -1.1102230246251565e-16, 'y': 1.414213562373095}})
 
 
 class TestSearchableDict(unittest.TestCase):
@@ -42,40 +112,13 @@ class TestSearchableDict(unittest.TestCase):
             ),
             point = self.easy
         )
-    
 
     def test_rec_type(self):
         """test that if created with another mutale mapping
-        converts it on the fly to himself"""
-        self.assertEqual(
-            type(self.tree["point"].copy()),
+        does not converts it on the fly to himself"""
+        self.assertNotEqual(
+            type(self.tree["point"]),
             sdict
-        )
-
-    def test_propagate(self):
-        self.tree.propagate(
-                lambda v: type(v) in { float, int},
-                lambda v: 2 * int(v),
-                lambda v: v
-            )
-        self.assertEqual(
-                self.tree["point"]["x"],
-                2
-        )
-        self.assertEqual(
-                self.tree["b"]["c"],
-                6 
-        )
-
-    def test_apply(self):
-        self.tree.apply(lambda x : x+1)
-        self.assertEqual(
-            self.tree["b"]["c"],
-            5.0
-        )
-        self.assertEqual(
-            self.tree["b"]["d"]["e"],
-            4
         )
 
     def test_search(self):

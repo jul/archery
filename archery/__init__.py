@@ -7,7 +7,7 @@
 
 from .bow import Daikyu as mdict, vdict, sdict
 from .barrack import paired_row_iter, bowyer
-__version__ = "0.1.7"
+__version__ = "0.1.8"
 __author__ = "julien tayon"
 __author_email__ = "julien@tayon.net"
 __all__ = [

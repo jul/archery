@@ -239,8 +239,6 @@ class InclusiveSubber(object):
 
 class Searchable(Iterator):
 
-    def apply(self, a_func):
-        self.propagate(lambda x: True, a_func, lambda x:x)
 
     def search(self, predicate):
         for el in self:
@@ -252,22 +250,3 @@ class Searchable(Iterator):
             value = el[-1]
             if predicate(value):
                 yield value
-
-    def propagate(self, pred, funct_true, funct_false):
-        for k, v in self.items():
-            if pred(v):
-                self[k] = funct_true(v)
-            else:
-                self[k] = funct_false(v)
-            if hasattr(self[k], "propagate"):
-                self[k].propagate(pred, funct_true, funct_false)
-
-    def bless(self, _type):
-        do_nothing = lambda x : x
-        def convert(node):
-            return _type(node)
-        def has_type(node):
-            return isinstance(node, MutableMapping
-                ) and not isinstance(node,_type)
-        self.propagate(has_type, convert, do_nothing)
-

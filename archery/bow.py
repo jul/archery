@@ -12,7 +12,7 @@ European bows (common names) : proposed standard behaviour
 I think I am already short of ideas
 
 """
-__all__ = [ 'Hankyu', 'Daikyu', "edict", 'mdict' ]
+__all__ = [ 'Hankyu', 'Daikyu', "vdict","sdict", 'mdict' ]
 
 from .trait import (
         InclusiveAdder, InclusiveSubber, ExclusiveMuler, 
@@ -21,25 +21,15 @@ from .trait import (
 from .quiver import LinearAlgebrae, VectorDict
 from .barrack import bowyer
 from collections import MutableMapping
+from warnings import warn
 
-
-class RecIniter(object):
-    
-    def __init__(self, *a, **kw):
-        my_class = locals().get(type(self).__name__,
-                            globals()[type(self).__name__])
-        getattr(my_class,"mapping").__init__(self, *a, **kw)
-        for k, v in self.items():
-            if not isinstance(v, my_class) and isinstance(v, MutableMapping):
-                self[k] = bowyer(my_class , v)
 
 
 class _Hankyu(InclusiveAdder,dict):
     pass
 
 
-
-class Hankyu(InclusiveAdder, RecIniter):
+class Hankyu(InclusiveAdder):
     """Use this at your own risk.
     Hankyu is the same class with the mnemonic for d(efault)dict with addition
 
@@ -62,9 +52,9 @@ class Hankyu(_Hankyu, dict):
         return bowyer(Hankyu, self)
 
 
-class _Daikyu(LinearAlgebrae, RecIniter):
+class _Daikyu(LinearAlgebrae):
     """japanese longbow"""
-    mapping = dict
+    pass
 
 class Daikyu(_Daikyu, dict):
     """Fix the broken copier
@@ -75,11 +65,16 @@ class Daikyu(_Daikyu, dict):
 mdict = Daikyu
 
 
+class _vdict(VectorDict,dict): pass
 
-class vdict(RecIniter, VectorDict, dict):
-    mapping = dict
+class vdict(_vdict):
+    def __init__(self, *a, **kw):
+        super(_vdict, self).__init__(*a, **kw)
+        for k, v in self.items():
+            if isinstance(v, MutableMapping):
+                self[k] = bowyer(globals()[type(self).__name__], v)
 
-class _sdict(Searchable, LinearAlgebrae, RecIniter, dict):
+class _sdict(Searchable, LinearAlgebrae, dict):
     """japanese longbow"""
     mapping = dict
 
@@ -91,8 +86,8 @@ class sdict(_sdict):
 class edict(_sdict):
 
     def __init__(self, *a, **kw):
+        warn("ExpDict/edict will become sdict", DeprecationWarning)
         super(_sdict, self).__init__(*a, **kw)
-        warns("ExpDict/edict will become sdict", DeprecationWarning)
         for k, v in self.items():
             if isinstance(v, MutableMapping):
                 self[k] = bowyer(globals()[type(self).__name__], v)
