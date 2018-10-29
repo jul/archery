@@ -140,6 +140,25 @@ class TestSearchableDict(unittest.TestCase):
                 ]),
                 set([('b', 'c', 3.0), ('point', 'x', 1)])
         )
+        self.assertEqual(
+                set([ x for x in self.tree.search(
+                    lambda x : Path(x).startswith("a")
+                    )
+                ]),
+                set([('a', 1)])
+        )
+    def test_path(self):
+        self.assertEqual(
+            Path(("a","b",1)).key(),
+            ("a","b")
+        )
+        self.assertFalse(
+            Path(("a","b",1)).contains("a","b","c")
+        )
+        self.assertEqual(
+            Path(("a","b",1)).value(),
+            1
+        )
 
     def test_leaf_search(self):
         self.assertEqual(

@@ -45,12 +45,7 @@ class Path(tuple):
         if len( a_tuple) == follow:
             return True
         index = False
-        try:
-            here = self[ _from:]
-            if len(here ) < len(a_tuple[follow:]):
-                return False
-        except IndexError:
-            return False
+        here = self[ _from:]
 
         try:
             index = here.index(a_tuple[follow] )
@@ -61,8 +56,6 @@ class Path(tuple):
                     )
         except ValueError:
             return False
-        except IndexError:
-            return self._contains(a_tuple, _from +  1 )
         return False
 
     def contains(self, *a_tuple ):
