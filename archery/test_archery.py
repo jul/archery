@@ -37,6 +37,23 @@ class TestVectorDict(unittest.TestCase):
                 cos(pi/4)
         )
 
+class TestBarrack(unittest.TestCase):
+    def test_path(self):
+        self.assertEqual(
+            Path(("a","b",1)).key(),
+            ("a","b")
+        )
+        self.assertFalse(
+            Path(("a","b",1)).contains("a","b","c")
+        )
+        self.assertEqual(
+            Path(("a","b",1)).value(),
+            1
+        )
+        self.assertTrue(Path(("x", "y", 1)).startswith("x"))
+        self.assertTrue(Path(("s", "x", "y", 1)).contains("x","y"))
+
+
 class TestBugWeired(unittest.TestCase):
 
     def test_stay_same(self):
@@ -150,18 +167,6 @@ class TestSearchableDict(unittest.TestCase):
                     )
                 ]),
                 set([('a', 1)])
-        )
-    def test_path(self):
-        self.assertEqual(
-            Path(("a","b",1)).key(),
-            ("a","b")
-        )
-        self.assertFalse(
-            Path(("a","b",1)).contains("a","b","c")
-        )
-        self.assertEqual(
-            Path(("a","b",1)).value(),
-            1
         )
 
     def test_leaf_search(self):
