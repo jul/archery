@@ -90,6 +90,11 @@ class TestBugWeired(unittest.TestCase):
             alien,
             {'x': {'x': 1, 'y': 2}, 'y': {'x': 1, 'y': 0}}
         )
+        """
+        undefined behaviour until I can make a sense of this
+
+
+
         self.assertAlmostEqual(
             rotation_maker(pi/4)(alien),
             {
@@ -97,7 +102,6 @@ class TestBugWeired(unittest.TestCase):
                 'y': {'x': -1.1102230246251565e-16, 'y': 1.414213562373095}
             }
         )
-        """ undefined behaviour until I can make a sense of this
         self.assertAlmostEqual(
             acos(alien.cos(rotation_maker(pi/4)(alien)))/2 / pi * 360,
             54.73561031724534
