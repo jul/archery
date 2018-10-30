@@ -9,21 +9,8 @@ from collections import MutableMapping
 MARKER=object()
 
 class Path(tuple):
-#    def __init__(self, a_tuple):
-#        """construct a Path from a tuple or a list 
-        
-# >>> p = Path( [  'a', 'b', 'c' ] )
-# >>> p
-# >>> ( 'a', 'b', 'c' )
-# >>> p = Path( (  'a', 'b', 'c' ) )
-# >>> p
-# >>> ( 'a', 'b', 'c' )
-#        """
-#        self += tuple(a_tuple)
-#
     def endswith( self, *a_tuple ):
         """check if path ends with the consecutive given has argumenbts value
- 
  >>> p = Path( [ 'a', 'b', 'c' ] )
  >>> p.endswith( 'b', 'c' )
  >>> True
