@@ -7,7 +7,7 @@ from .bow import mdict, vdict, sdict
 from .barrack import (
     paired_row_iter, bowyer, make_from_path, Path, mapping_row_iter
 )
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 __author__ = "julien tayon"
 __author_email__ = "julien@tayon.net"
 __all__ = [

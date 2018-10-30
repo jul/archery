@@ -101,6 +101,9 @@ Changelog and roadmap
 Changelog
 *********
 
+1.1.1
+    Trying very hard to have the README.rst formated.
+
 1.1.0
     *make_from_path* : it made no sense it took a first argument
     a MutableMapping that would be destroyed in the process.

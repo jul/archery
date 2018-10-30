@@ -88,6 +88,7 @@ vdict
 dict that defines *abs()*, *dot()*, *cos()* in the euclidean meaning
 
 ex::
+
    >>> from archery import vdict as Point
    >>>
    >>> u = Point(x=1, y=1)
@@ -120,6 +121,7 @@ ex::
    >>> # OUT : 1.41421356237
    >>> print(vdict(x=1,y=0,z=3).dot(vdict(x=1, y=1, z=-1)))
    >>> #OUT -2
+
 
 sdict
 *****
