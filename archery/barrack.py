@@ -68,20 +68,20 @@ class Path(tuple):
         """
         return Path(self[:-1])
 
-def make_from_path(a_dict, path):
+def make_from_path(type_of_mapping, path):
     """Work in Progress
     create a mutable mapping from a `Path`_ (tuple made of a series of keys in a dict leading to a
     value followed by a value).
     The source is used a mapping factory and is reset in the process
 
-    >>> make_from_path(dict(x=1), ("y", "z", 2))
+    >>> make_from_path(dict, ("y", "z", 2))
     >>> #Out[2]: {'y': {'z': 2}}
 
     """
     path = list(path)
     value = path.pop()
     last_key = path.pop()
-    tmap = type(a_dict)
+    tmap = type_of_mapping
     mapping = tmap({last_key : value})
     while path:
         _next = path.pop()

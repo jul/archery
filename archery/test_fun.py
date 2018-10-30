@@ -31,7 +31,7 @@ class TestBuildingFromMap(unittest.TestCase):
     def test_weired_exp_idea(self):
         tree= dict(a=dict(b=1, c=1, d=dict(e=2, f=dict(e=5)), v=3))
         self.assertEqual(tree,
-                sum([ make_from_path(mdict(),p) for p in mapping_row_iter(tree)])
+                sum([ make_from_path(mdict, p) for p in mapping_row_iter(tree)])
         )
 
 if __name__ == '__main__':

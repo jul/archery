@@ -101,6 +101,11 @@ Changelog and roadmap
 Changelog
 *********
 
+1.1.0
+    *make_from_path* : it made no sense it took a first argument
+    a MutableMapping that would be destroyed in the process.
+    Now takes a type of MutableMapping as an input.
+
 1.0.0
     Flatter and simpler naming (while keeping descendant compatibility)
 
