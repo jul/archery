@@ -45,6 +45,12 @@ master_doc = 'index'
 
 # General information about the project.
 author = "julien tayon <julien@tayon.net>"
+try:
+    from archery import __author__
+    from archery import __author_email__
+    author = "%s <%s>" % (__author__, __author_email__)
+except:
+    pass
 project = u'archery'
 this_year = datetime.date.today().year
 copyright = '%s, %s' % (this_year, author)

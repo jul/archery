@@ -20,8 +20,7 @@ class Path(tuple):
         return self[len(self) - len(a_tuple) : ] == a_tuple
 
     def startswith( self, *a_tuple ):
-        """checks if a path starts with the value 
-
+        """checks if a path starts with the value
  >>> p = Path( [ 'a', 'b', 'c', 'd' ] )
  >>> p.startswith( 'a', 'b' )
  >>> True
@@ -46,14 +45,12 @@ class Path(tuple):
         return False
 
     def contains(self, *a_tuple ):
-       """checks if the serie of keys is contained in a path
- 
- >>> p = Path( [ 'a', 'b', 'c', 'd' ] )
- >>> p.contains( 'b', 'c' )
- >>> True
-
-       """
-       return self._contains( a_tuple )
+        """checks if the serie of keys is contained in a path
+>>> p = Path( [ 'a', 'b', 'c', 'd' ] )
+>>> p.contains( 'b', 'c' )
+>>> True
+        """
+        return self._contains(a_tuple)
 
     def value(self):
         return self[-1]

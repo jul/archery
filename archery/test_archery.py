@@ -5,7 +5,7 @@ import sys
 import warnings
 import unittest
 from  archery.bow import Hankyu, Daikyu, sdict, vdict, mdict, edict
-from archery.barrack import bowyer, Path
+from archery.barrack import bowyer, Path, make_from_path, paired_row_iter
 
 from math import sqrt, cos, pi, sin, acos
 
@@ -52,6 +52,11 @@ class TestBarrack(unittest.TestCase):
         )
         self.assertTrue(Path(("x", "y", 1)).startswith("x"))
         self.assertTrue(Path(("s", "x", "y", 1)).contains("x","y"))
+
+    def test_paired_row_iter(self):
+        self.assertEqual(set(paired_row_iter(dict(x=1, a=dict(b=dict(c=1))))),
+            { (("x",),1), (("a","b","c"), 1)}
+        )
 
 
 class TestBugWeired(unittest.TestCase):
