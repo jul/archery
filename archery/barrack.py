@@ -11,6 +11,7 @@ MARKER=object()
 class Path(tuple):
     def endswith( self, *a_tuple ):
         """check if path ends with the consecutive given has argumenbts value
+
  >>> p = Path( [ 'a', 'b', 'c' ] )
  >>> p.endswith( 'b', 'c' )
  >>> True
@@ -21,6 +22,7 @@ class Path(tuple):
 
     def startswith( self, *a_tuple ):
         """checks if a path starts with the value
+
  >>> p = Path( [ 'a', 'b', 'c', 'd' ] )
  >>> p.startswith( 'a', 'b' )
  >>> True
@@ -46,20 +48,36 @@ class Path(tuple):
 
     def contains(self, *a_tuple ):
         """checks if the serie of keys is contained in a path
->>> p = Path( [ 'a', 'b', 'c', 'd' ] )
->>> p.contains( 'b', 'c' )
->>> True
+
+ >>> p = Path( [ 'a', 'b', 'c', 'd' ] )
+ >>> p.contains( 'b', 'c' )
+ >>> True
+
         """
         return self._contains(a_tuple)
 
     def value(self):
+        """ function provided for code readability:
+        - returns the left most value of the Path aka the value
+        """
         return self[-1]
 
     def key(self):
+        """ function provided for code readability:
+        - returns all the keys in the Path
+        """
         return Path(self[:-1])
 
 def make_from_path(a_dict, path):
-    """Experimental: convert a path in a mapping"""
+    """Work in Progress
+    create a mutable mapping from a `Path`_ (tuple made of a series of keys in a dict leading to a
+    value followed by a value).
+    The source is used a mapping factory and is reset in the process
+
+    >>> make_from_path(dict(x=1), ("y", "z", 2))
+    >>> #Out[2]: {'y': {'z': 2}}
+
+    """
     path = list(path)
     value = path.pop()
     last_key = path.pop()
@@ -83,7 +101,17 @@ def bowyer(_mapping_fact, _mapping_to_convert):
 def mapping_row_iter(tree, path=MARKER):
     """
     iterator on a tree that yield an iterator on a mapping in the form of 
-    a list of ordered key that leads to the element and the value"""
+    a list of ordered key that leads to the element and the value
+
+    >>> from archery import mapping_row_iter
+    >>> [ x for x in mapping_row_iter({
+    ...        "john" : {'math':10.0, 'sport':1.0},~
+    ...        "lily" : { 'math':20, 'sport':15.0}
+    ...    })]
+    >>> #[['john', 'sport', 1.0], ['john', 'math', 10.0],~
+    >>> #['lily', 'sport', 15.0], ['lily', 'math', 20]]
+
+    """
     if path is MARKER:
         path = ()
     for k, v in tree.items():

@@ -7,8 +7,9 @@ You'll make your code perspire smartness by all its pore(c)(tm)(r).
 from __future__ import division
 from collections import MutableMapping, Mapping
 from .barrack import paired_row_iter, mapping_row_iter, bowyer
-__all__ = [ 'InclusiveAdder', 'InclusiveSubber', 
-    'ExclusiveMuler', 'TaintedExclusiveDiver', 'Copier', 'Iterator', 'Searchable']
+__all__ = [ 'InclusiveAdder', 'InclusiveSubber', "Vector",
+    'ExclusiveMuler', 'TaintedExclusiveDiver',
+    'Copier', 'Iterator', 'Searchable']
 
 class Copier(object):
     def copy(self):
@@ -29,21 +30,26 @@ class Vector(object):
     def dot(u, v):
         """
         scalar product of two MappableMappings (recursive)
+        https://en.wikipedia.org/wiki/Dot_product
+
         """
         return sum(v for i,v in paired_row_iter(u*v))
 
 
     def __abs__(v):
         """return the absolute value (hence >=0)
-        aka the distance from origin
+        aka the distance from origin as defined in Euclidean geometry.
+        Keys of the dict are the dimension, values are the metrics
+        https://en.wikipedia.org/wiki/Euclidean_distance
         """
         return v.dot(v)**.5
 
     def cos(u, v):
-        """Thought the cos({}, any) yielding a divided / 0 exc was a bug
-        It's totally okay
+        """
+        returns the cosine similarity of 2 mutable mappings (recursive)
+        https://en.wikipedia.org/wiki/Cosine_similarity
+        dict().cos(dict(x=....)) will logically yield division by 0 exception.
         http://math.stackexchange.com/a/932454
-        only works for orthonormalised space, use jaccard else.
         """
         return u.dot(v) / abs(u) / abs(v)
 
@@ -241,11 +247,17 @@ class Searchable(Iterator):
 
 
     def search(self, predicate):
+        """Return a generator of all tuples made of :
+        - all keys leading to a value
+        - and the value itself
+        that match the predicate on the `Path`_"""
         for el in self:
             if predicate(el):
                 yield el
 
     def leaf_search(self, predicate):
+        """Return a generator all all values matching 
+        the predicates"""
         for el in self:
             value = el[-1]
             if predicate(value):

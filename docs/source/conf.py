@@ -42,15 +42,14 @@ source_suffix = '.rst'
 
 # The master toctree document.
 master_doc = 'index'
+sys.path.insert(0, os.path.abspath('../..'))
 
 # General information about the project.
-author = "julien tayon <julien@tayon.net>"
-try:
-    from archery import __author__
-    from archery import __author_email__
-    author = "%s <%s>" % (__author__, __author_email__)
-except:
-    pass
+from archery import __author__
+from archery import __author_email__
+from archery import __version__
+from archery import *
+author = "%s <%s>" % (__author__, __author_email__)
 project = u'archery'
 this_year = datetime.date.today().year
 copyright = '%s, %s' % (this_year, author)
@@ -62,13 +61,7 @@ copyright = '%s, %s' % (this_year, author)
 #
 # The short X.Y version.
 # The full version, including alpha/beta/rc tags.
-version = "0.1.8"
-try:
-    sys.path.insert(0, os.path.abspath('..'))
-    from archery import __version__
-    version = __version__
-except:
-    pass
+version = __version__
 
 release = version
 
