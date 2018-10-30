@@ -126,7 +126,7 @@ ex::
 sdict
 *****
 
-dict made for searching value/keys/`Path`_ with special interests.
+dict made for searching value/keys/*Path* with special interests.
 
 Basically, it returns an interator in the form of a tuple being all the keys and the value.
 It is a neat trick, if you combine it with `make_from_path`_, it helps select exactly what you want in a dict::

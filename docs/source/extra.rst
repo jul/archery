@@ -160,6 +160,9 @@ and then
 Roadmap
 *******
 
+1.1.1/2
+    - trying to have a valider valid README.rst (python setup check -r is not enough)
+
 1.0.0
     - Flattening the structure of archery and making naming more obvious
     - Keeping the old API compatible
