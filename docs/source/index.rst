@@ -181,9 +181,8 @@ It is a neat trick, if you combine it with `make_from_path`_, it helps select ex
     >>> ## equivalent to list(tree.search(lambda x: Path(x).contains("point")))
     >>> print(res)
     >>> #Out: [('point', 'y', 1), ('point', 'x', 1), ('point', 'z', 0)]
-    >>> make_from_path(dict(), res)
-    >>> # {('point', 'y', 1): {('point', 'x', 1): ('point', 'z', 0)}}
-
+    >>> sum([ make_from_path(mdict, r) for r in  res])
+    >>> #Out:  {'point': {'x': 1, 'y': 1, 'z': 0}}
 
 Advanced usage
 ==============
