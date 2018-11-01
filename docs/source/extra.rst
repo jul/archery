@@ -157,9 +157,11 @@ and then
 - **y** = improvement
 - **z** = bugfix
 
-Roadmap
-*******
+Changelog
+*********
 
+1.2.1
+    - fixes documentation issue s/interator/iterator/g
 1.2.0
     - fixes a bug in __radd__ such as doing a+b could result in modifying
     a (a+b was acting lile a+=b)
@@ -174,4 +176,14 @@ Roadmap
     - maybe prepare a set of trait to make recursive dict looks like 
       *sets* in a consistent way
 
+Roadmap
+*******
+
+2.x.x
+    - Fixing __init__ // copy
+    - try the funcoperator infix
+
+1.x.x
+    - code coverage of 100%
+    - pay more attention to intricate dict in tests
 
