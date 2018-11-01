@@ -10,12 +10,15 @@ from .barrack import paired_row_iter, mapping_row_iter, bowyer
 __all__ = [ 'InclusiveAdder', 'InclusiveSubber', "Vector",
     'ExclusiveMuler', 'TaintedExclusiveDiver',
     'Copier', 'Iterator', 'Searchable']
-
+from copy import deepcopy
 class Copier(object):
     def copy(self):
         try:
-            return bowyer(globals()[type(self).__name__], 
+            return deepcopy(
+                bowyer(
+                    globals()[type(self).__name__], 
                     {k:v for k,v in self.items()}
+                )
             )
         except KeyError:
             pass
@@ -23,7 +26,7 @@ class Copier(object):
             return self._asdict().copy()
         if hasattr(super(Copier, self),"copy"):
             return self.__class__(super(Copier, self).copy())
-        return [ x for x in self]
+        return deepcopy(self)
 
 class Vector(object):
 
@@ -52,6 +55,8 @@ class Vector(object):
         http://math.stackexchange.com/a/932454
         """
         return u.dot(v) / abs(u) / abs(v)
+
+from copy import deepcopy
 
 class InclusiveAdder(object):
     """ making dict able to add 
@@ -92,12 +97,9 @@ class InclusiveAdder(object):
             else:
                 self[k] = v
         return self
-
     def __radd__(self, other):
-        copy = self.copy()
-        if not isinstance(other, MutableMapping):
-            return copy.__iinc__(other)
-        return copy.__iadd__(other)
+        copy = deepcopy(self)
+        return copy + other
 
 
 class TaintedExclusiveDiver(object):

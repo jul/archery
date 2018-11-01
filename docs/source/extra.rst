@@ -160,6 +160,10 @@ and then
 Roadmap
 *******
 
+1.2.0
+    - fixes a bug in __radd__ such as doing a+b could result in modifying
+    a (a+b was acting lile a+=b)
+
 1.1.1/2
     - trying to have a valider valid README.rst (python setup check -r is not enough)
 

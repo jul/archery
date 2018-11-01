@@ -44,23 +44,36 @@ class Hankyu(InclusiveAdder):
  {'a': -1, 'c': 2, 'b': 0}
 """
     mapping = dict
-
+from copy import deepcopy
 class Hankyu(_Hankyu, dict):
     """Fix the broken copier
     metaclass are hard"""
     def copy(self):
-        return bowyer(Hankyu, self)
+        return deepcopy(
+            bowyer(
+                Hankyu,
+                self
+            )
+        )
 
 
 class _Daikyu(LinearAlgebrae):
     """japanese longbow"""
-    pass
+    """Fix the broken copier
+    metaclass are hard"""
+    def copy(self):
+        return deepcopy(
+            bowyer(
+                Daikyu,
+                self
+            )
+        )
 
 class Daikyu(_Daikyu, dict):
     """Fix the broken copier
     metaclass are hard"""
-    def copy(self):
-        return bowyer(Daikyu, self)
+    pass
+
 
 mdict = Daikyu
 
