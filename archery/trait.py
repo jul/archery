@@ -97,9 +97,9 @@ class InclusiveAdder(object):
             else:
                 self[k] = v
         return self
+  
     def __radd__(self, other):
-        copy = deepcopy(self)
-        return copy + other
+        return self + other
 
 
 class TaintedExclusiveDiver(object):
