@@ -6,18 +6,40 @@
 #import sys
 from distutils.command.build_py import build_py as _build_py
 from distutils.core import setup
+from distutils.cmd import Command
 from archery import __version__
 from archery import __author__
 from archery import __author_email__
 import unittest
 import sys
 
-def test():
+class Test(Command):
+  """A custom command to run Pylint on all Python source files."""
+  def initialize_options(self):
+    """Set default values for options."""
+    self.verbosity=1
+    pass
+
+  def finalize_options(self):
+    """Post-process options."""
+    pass
+
+  description = 'test the module'
+  user_options = [
+  ('verbosity=', 'V', 'verbosity level'),
+  ]
+
+
+  def run(self):
+    """Run command."""
+    test(int(self.verbosity))
+
+def test(verbosity=1):
     """Specialized Python source builder."""
     from archery import test_archery
     loader= unittest.TestLoader()
     suite=loader.loadTestsFromModule(test_archery)
-    runner=unittest.TextTestRunner()
+    runner=unittest.TextTestRunner(verbosity=verbosity)
     result=runner.run(suite)
     if  not result.wasSuccessful():
         raise Exception( "Test Failed: Aborting install")
@@ -26,6 +48,9 @@ if "install" in sys.argv or "sdist" in sys.argv or "update" in sys.argv:
     test()
 
 setup(
+        cmdclass=dict(
+        test=Test,
+        ),
         name='archery',
         version=__version__,
         author=__author__,

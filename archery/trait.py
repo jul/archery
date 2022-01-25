@@ -80,7 +80,6 @@ class InclusiveAdder(object):
         copy = self.copy()
         copy += other
         return copy
-        
 
     def __iinc__(self, number):
         """in place increment"""
@@ -97,9 +96,10 @@ class InclusiveAdder(object):
             else:
                 self[k] = v
         return self
-  
+
     def __radd__(self, other):
-        return self + other
+        copy = self.copy()
+        return copy + other
 
 
 class TaintedExclusiveDiver(object):

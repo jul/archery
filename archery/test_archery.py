@@ -38,12 +38,18 @@ class TestKyleExpectation(unittest.TestCase):
 
     def test_bug_iadd(self):
         a = mdict({"a": 1, "y": mdict({"b": 4, "c": [5]})})
+        c = mdict({"a": 1, "y": mdict({"b": 4, "c": 5})})
         b=  mdict({"a": 1, "x": 5, "y": mdict({"b": 6, "c": [12]})})
         expected_ab = {"a": 2, "x": 5, "y": {"b": 10, "c": [5, 12]}}
         expected_ba = {"a": 2, "x": 5, "y": {"b": 10, "c": [12, 5]}}
         self.assertEqual(a + b, expected_ab)
         self.assertEqual(b + a, expected_ba)
         a += b
+        c+=1
+        d=c.copy()
+        e=4
+        e+=c
+        self.assertEqual(c, d)
         self.assertEqual(a, expected_ab)
 
 
