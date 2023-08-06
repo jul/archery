@@ -4,7 +4,11 @@
 Traits / mixins are the heart of archery, but sometimes you need functions to help you
 
 """
-from collections import MutableMapping
+try:
+    from collections import MutableMapping
+except ImportError:
+    from collections.abc import MutableMapping
+
 
 MARKER=object()
 

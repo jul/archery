@@ -20,7 +20,11 @@ from .trait import (
     )
 from .quiver import LinearAlgebrae, VectorDict
 from .barrack import bowyer
-from collections import MutableMapping
+try:
+    from collections import MutableMapping
+except ImportError:
+    from collections.abc import MutableMapping
+
 from warnings import warn
 
 

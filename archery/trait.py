@@ -5,7 +5,11 @@
 You'll make your code perspire smartness by all its pore(c)(tm)(r).
 """
 from __future__ import division
-from collections import MutableMapping, Mapping
+try:
+    from collections import MutableMapping, Mapping
+except ImportError:
+    from collections.abc import MutableMapping, Mapping
+
 from .barrack import paired_row_iter, mapping_row_iter, bowyer
 __all__ = [ 'InclusiveAdder', 'InclusiveSubber', "Vector",
     'ExclusiveMuler', 'TaintedExclusiveDiver',
