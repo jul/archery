@@ -61,6 +61,7 @@ setup(
         description='Traits (Mixins) to give +,/,-,* to MutableMapping ',
         long_description=open("README.txt").read(),
         requires=[ ],
+        scripts = ( "archery/toy/big", ),
         classifiers=[
           'Development Status :: 5 - Production/Stable',
           'License :: OSI Approved :: Python Software Foundation License',
