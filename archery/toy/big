@@ -1,0 +1,276 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Biggest change in a file hierarchy
+**********************************
+
+big is a proof of usage of how archery by embracing linear algebrae for
+dict is making « group by »/« aggregations » easier in real life.
+
+What it does
+************
+
+It scans for all dirs given a departure point and a predicate (is it a 
+terminal dir or a just a dir) and instead for ncgu or gdu will compute 
+the biggest growth in size according to threshold (day, month, week, year)
+and give results sorted by biggest change (topb 5)
+
+How it works?
+*************
+
+./big.py path_to_scan
+will scan all dirs in a descendant way WITHOUT recursion.
+
+PS: because I like SIGINFO on BSD ctrl+C will give the current progression
+and 3 hit in 2 seconds are required to stop the program
+"""
+
+import os
+from os.path import abspath
+from os import scandir
+from json import dumps
+from sys import argv, stdout, stderr
+from archery import mdict
+from time import time
+from signal import signal, SIGINT, SIGUSR1, alarm, SIGALRM
+sig_msg=""
+interrupted=0
+def sigint(*whatever):
+    global interrupted, sig_msg
+    stderr.write(sig_msg)
+    stderr.write("Ctrl + C hit. Info given, rehit ctrl+C to stop the program ....\n")
+
+    stderr.flush()
+    if interrupted >= 3:
+        stderr.write("Ctrl + C hit more than 3 times in 2 second, EXITING ....\n")
+        exit()
+    # clear the interruption in 2 seconds
+    alarm(2)
+    interrupted+=1
+
+def reset_interrupt(*whatever):
+    global interrupted
+    # a little more sensitive than interrupted = 0
+    interrupted -= 1
+
+
+signal(SIGALRM, reset_interrupt)
+signal(SIGINT, sigint)
+
+pp = lambda d : print(dumps(d, indent=4))
+path = '.'
+dbg = print
+dbg = lambda d : d
+usage = lambda : print(__doc__)
+try:
+    path=argv[1]
+except IndexError:
+    usage()
+    print("using default path = %r" % path)
+    input("Press Enter to continue...")
+
+terminal= set([])
+
+def dot(prog):
+    flush_me = False
+
+    if prog == 0:
+        flush_me = True
+        stdout.flush()
+        stderr.flush()
+
+    if prog%100==0 and prog!=0:
+        flush_me = True
+
+        stdout.write("\b..")
+    else:
+        if prog%20==0:
+            flush_me = True
+            stdout.write('\b')
+            stdout.write(("/", "|", "-", '\\')[(prog%80)//20])
+    if prog%(80* 100)==79 * 100:
+        flush_me = True
+        stdout.write("\b")
+    if prog%(80* 100)==0 and prog > 0:
+        flush_me = True
+        stdout.write("\n")
+
+    if flush_me:
+        stdout.flush()
+        stderr.flush()
+    
+to_scan = [ abspath(path), ]
+ignored = []
+exclude = {"/home/.ecryptfs","/proc", "/dev", "/sys", "/run"}
+seen =set(to_scan)
+errors=mdict()
+print("#### exclude list ####")
+pp(list(exclude))
+take_only_leaves = True
+
+def scan_for_leaves(to_scan):
+    global seen, terminal, errors, sig_msg
+    prog=0
+    print()
+    print("*"*80)
+    print("scanning for dirs without dirs in them (leaves)")
+    print("*"*80)
+
+        
+    while to_scan:
+        current = to_scan.pop()
+        sig_msg = "\nscanning %s\n" %  current
+        if current in exclude:
+            stdout.write("\b\nskipping %r\n" % current)
+            continue 
+        dot(prog)
+        prog+=1
+        try:
+            with scandir(current) as ld:
+                has_leaves = False
+                for entry in ld:
+                    try:
+
+                        if entry.is_dir(follow_symlinks=False) and not entry.is_symlink():
+                            if entry.path not in seen:
+                                to_scan+= [ entry.path, ]  
+                            seen |= set([entry.path])
+                            has_leaves=True
+                    except Exception as e:
+                        print(e)
+                        print(entry.name)
+                        has_leaves=True
+                if not has_leaves:
+                    terminal |= { current, }
+        except Exception as e:
+            errors += mdict({ str(e) : 1 })
+
+        if not to_scan:
+            break
+    print("\b")
+    print("found %d leaves" % len(terminal))
+    print()
+
+
+def scan_them_all(to_scan):
+    global seen, terminal, errors
+    prog=0
+    print()
+    print("*"*80)
+    print("scanning for ALL dirs")
+    print("*"*80)
+    while to_scan:
+        current = to_scan.pop()
+        if current in exclude:
+            stdout.write("\b\nskipping %r\n" % current)
+            continue
+        dot(prog)
+        prog+=1
+        try:
+            with scandir(current) as ld:
+                dbg("scanning %r" % path)
+                for entry in ld:
+                    try:
+                        if entry.is_dir(follow_symlinks=False) and not entry.is_symlink():
+                            if entry.path not in seen:
+                                to_scan+= [ entry.path, ]  
+                            seen |= set([entry.path])
+
+                    except Exception as e:
+                        print(e)
+                        print(entry.name)
+                dbg("on a des enfant")
+                terminal |= { current, }
+        except Exception as e:
+            errors += mdict({ str(e) : 1 })
+
+        if not to_scan:
+            break
+    print("\b")
+    print("found %d dir " % len(terminal))
+    print()
+
+### proud ###
+( scan_them_all, scan_for_leaves)[take_only_leaves](to_scan)
+
+print("*" * 80)
+print("computing increase in size on the last day, week, month, year")
+print("*" * 80)
+res=mdict()
+now = time() 
+threshold_as_seconds = (
+    ("hour",                3600),
+    ("day" ,         24.0 * 3600),
+    ("week" ,   7 * (24.0 * 3600)),
+    ("month" , 30 * (24.0 * 3600)),
+    ("year" , 365 * (24.0 * 3600)),
+    ("infinite" , time()),
+) 
+
+
+
+def as_human(size):
+    from math import log
+    return int(log(size) - 3) * "*"
+
+def as_human(size):
+    size = int(size)
+    units = ("b", "kb", "mb", "gb", 'tb')
+    for o, unit in enumerate(units):
+        if size >> ( o * 10 ) < 1<<10: 
+            return "%d %s" % ( size >> (o * 10), unit)
+    else:
+        return "%d %s" % ( size >> (o * 10), unit)
+
+
+threshold_init_growth = mdict(threshold_as_seconds) * 0
+prog = 0
+for _path in terminal:
+    dot(prog)
+    prog+=1
+    sig_msg = "\nscanning %s\n" %  _path
+         
+    res[_path] = mdict(threshold_init_growth.copy())
+    try:
+        with scandir(_path) as ld:
+            it=0
+            for entry in ld:
+                it+=1
+                sig_msg = "\nscanning (%dth entry) in %s\n" % (it, _path) 
+                if not entry.is_file(follow_symlinks=False):
+                    next
+                try:
+                    stat = os.stat(entry)
+                    size = stat.st_size
+                    mtime = stat.st_ctime
+                    for fresh_name, fresh_value in threshold_as_seconds:
+                        if (now - mtime) < fresh_value:  
+                            res[_path] += mdict({fresh_name :  size })
+                except Exception as e:
+                    errors += mdict({ str(e) : 1 })
+        res[_path]["ratio"] = res[_path] / (res[_path].get("infinite",1) or 1 )
+    except Exception as e:
+        errors += mdict({ str(e) : 1 })
+
+print("\b")
+print("treated %d dirs " % len(terminal))
+
+for freshness in [ nv[0] for nv in threshold_as_seconds if nv[0] not in { 'infinite', 'ratio' }]:
+    print()
+    print("*" * 80)
+    print("biggest change by the %s" % freshness)
+    print("*" * 80)
+    growth = sorted([ (p , res[p][freshness] ) for p in res.keys() if res[p][freshness] > 0 ],
+                key=lambda kv_pair: kv_pair[1],
+                reverse=True,
+                )
+    top_growth=dict(growth[:5])
+    print( "\n".join([ "%8s : %r" % (as_human(int(v)), repr(k)) for k,v in top_growth.items() ]) )
+    print("-" * 80)
+    print( "%8s : reste" % as_human(sum([ x[1] for x in growth[5:]])))
+    print("-" * 80)
+
+
+
+print("#### errors ####")
+pp(errors)
