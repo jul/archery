@@ -10,67 +10,65 @@ except ImportError:
     from collections.abc import MutableMapping
 
 
-MARKER=object()
+MARKER = object()
+
 
 class Path(tuple):
-    def endswith( self, *a_tuple ):
+    def endswith(self, *a_tuple):
         """check if path ends with the consecutive given has argumenbts value
 
- >>> p = Path( [ 'a', 'b', 'c' ] )
- >>> p.endswith( 'b', 'c' )
- >>> True
- >>> p.endswith( 'c', 'b' )
- >>> False
+        >>> p = Path( [ 'a', 'b', 'c' ] )
+        >>> p.endswith( 'b', 'c' )
+        >>> True
+        >>> p.endswith( 'c', 'b' )
+        >>> False
         """
-        return self[len(self) - len(a_tuple) : ] == a_tuple
+        return self[len(self) - len(a_tuple) :] == a_tuple
 
-    def startswith( self, *a_tuple ):
+    def startswith(self, *a_tuple):
         """checks if a path starts with the value
 
- >>> p = Path( [ 'a', 'b', 'c', 'd' ] )
- >>> p.startswith( 'a', 'b' )
- >>> True
+        >>> p = Path( [ 'a', 'b', 'c', 'd' ] )
+        >>> p.startswith( 'a', 'b' )
+        >>> True
         """
-        return self[: len( a_tuple ) ] == a_tuple
+        return self[: len(a_tuple)] == a_tuple
 
-    def _contains( self, a_tuple, _from = 0, follow = 0):
-        if len( a_tuple) == follow:
+    def _contains(self, a_tuple, _from=0, follow=0):
+        if len(a_tuple) == follow:
             return True
         index = False
-        here = self[ _from:]
+        here = self[_from:]
 
         try:
-            index = here.index(a_tuple[follow] )
-            return  self._contains(
-                    a_tuple, 
-                        index +  1 , 
-                        follow + 1
-                    )
+            index = here.index(a_tuple[follow])
+            return self._contains(a_tuple, index + 1, follow + 1)
         except ValueError:
             return False
         return False
 
-    def contains(self, *a_tuple ):
+    def contains(self, *a_tuple):
         """checks if the serie of keys is contained in a path
 
- >>> p = Path( [ 'a', 'b', 'c', 'd' ] )
- >>> p.contains( 'b', 'c' )
- >>> True
+        >>> p = Path( [ 'a', 'b', 'c', 'd' ] )
+        >>> p.contains( 'b', 'c' )
+        >>> True
 
         """
         return self._contains(a_tuple)
 
     def value(self):
-        """ function provided for code readability:
+        """function provided for code readability:
         - returns the left most value of the Path aka the value
         """
         return self[-1]
 
     def key(self):
-        """ function provided for code readability:
+        """function provided for code readability:
         - returns all the keys in the Path
         """
         return Path(self[:-1])
+
 
 def make_from_path(type_of_mapping, path):
     """Work in Progress
@@ -86,15 +84,16 @@ def make_from_path(type_of_mapping, path):
     value = path.pop()
     last_key = path.pop()
     tmap = type_of_mapping
-    mapping = tmap({last_key : value})
+    mapping = tmap({last_key: value})
     while path:
         _next = path.pop()
-        mapping = tmap({_next : mapping })
+        mapping = tmap({_next: mapping})
     return mapping
+
 
 def bowyer(_mapping_fact, _mapping_to_convert):
     """the craftsman that makes bow
-    A function that given a function in the form 
+    A function that given a function in the form
     f(tree) will convert a one level tree in your mapping"""
     _toc = _mapping_fact(_mapping_to_convert)
     for k, v in _toc.items():
@@ -102,9 +101,10 @@ def bowyer(_mapping_fact, _mapping_to_convert):
             _toc[k] = bowyer(_mapping_fact, v)
     return _toc
 
+
 def mapping_row_iter(tree, path=MARKER):
     """
-    iterator on a tree that yield an iterator on a mapping in the form of 
+    iterator on a tree that yield an iterator on a mapping in the form of
     a list of ordered key that leads to the element and the value
 
     >>> from archery import mapping_row_iter
@@ -123,7 +123,7 @@ def mapping_row_iter(tree, path=MARKER):
             for child in mapping_row_iter(v, (path + (k,))):
                 yield child
         else:
-            yield path + (k , v)
+            yield path + (k, v)
 
 
 def paired_row_iter(tree, path=MARKER):
@@ -138,6 +138,4 @@ def paired_row_iter(tree, path=MARKER):
             for child in paired_row_iter(v, path + (k,)):
                 yield child
         else:
-            yield ((path + (k,)) , v)
-
-
+            yield ((path + (k,)), v)

@@ -223,54 +223,55 @@ def as_human(size):
         return "%d %s" % ( size >> (o * 10), unit)
 
 
-threshold_init_growth = mdict(threshold_as_seconds) * 0
-prog = 0
-for _path in terminal:
-    dot(prog)
-    prog+=1
-    sig_msg = "\nscanning %s\n" %  _path
-         
-    res[_path] = mdict(threshold_init_growth.copy())
-    try:
-        with scandir(_path) as ld:
-            it=0
-            for entry in ld:
-                it+=1
-                sig_msg = "\nscanning (%dth entry) in %s\n" % (it, _path) 
-                if not entry.is_file(follow_symlinks=False):
-                    next
-                try:
-                    stat = os.stat(entry)
-                    size = stat.st_size
-                    mtime = stat.st_ctime
-                    for fresh_name, fresh_value in threshold_as_seconds:
-                        if (now - mtime) < fresh_value:  
-                            res[_path] += mdict({fresh_name :  size })
-                except Exception as e:
-                    errors += mdict({ str(e) : 1 })
-        res[_path]["ratio"] = res[_path] / (res[_path].get("infinite",1) or 1 )
-    except Exception as e:
-        errors += mdict({ str(e) : 1 })
+def main():
+    threshold_init_growth = mdict(threshold_as_seconds) * 0
+    prog = 0
+    for _path in terminal:
+        dot(prog)
+        prog+=1
+        sig_msg = "\nscanning %s\n" %  _path
+             
+        res[_path] = mdict(threshold_init_growth.copy())
+        try:
+            with scandir(_path) as ld:
+                it=0
+                for entry in ld:
+                    it+=1
+                    sig_msg = "\nscanning (%dth entry) in %s\n" % (it, _path) 
+                    if not entry.is_file(follow_symlinks=False):
+                        next
+                    try:
+                        stat = os.stat(entry)
+                        size = stat.st_size
+                        mtime = stat.st_ctime
+                        for fresh_name, fresh_value in threshold_as_seconds:
+                            if (now - mtime) < fresh_value:  
+                                res[_path] += mdict({fresh_name :  size })
+                    except Exception as e:
+                        errors += mdict({ str(e) : 1 })
+            res[_path]["ratio"] = res[_path] / (res[_path].get("infinite",1) or 1 )
+        except Exception as e:
+            errors += mdict({ str(e) : 1 })
 
-print("\b")
-print("treated %d dirs " % len(terminal))
+    print("\b")
+    print("treated %d dirs " % len(terminal))
 
-for freshness in [ nv[0] for nv in threshold_as_seconds if nv[0] not in { 'infinite', 'ratio' }]:
-    print()
-    print("*" * 80)
-    print("biggest change by the %s" % freshness)
-    print("*" * 80)
-    growth = sorted([ (p , res[p][freshness] ) for p in res.keys() if res[p][freshness] > 0 ],
-                key=lambda kv_pair: kv_pair[1],
-                reverse=True,
-                )
-    top_growth=dict(growth[:5])
-    print( "\n".join([ "%8s : %r" % (as_human(int(v)), repr(k)) for k,v in top_growth.items() ]) )
-    print("-" * 80)
-    print( "%8s : reste" % as_human(sum([ x[1] for x in growth[5:]])))
-    print("-" * 80)
+    for freshness in [ nv[0] for nv in threshold_as_seconds if nv[0] not in { 'infinite', 'ratio' }]:
+        print()
+        print("*" * 80)
+        print("biggest change by the %s" % freshness)
+        print("*" * 80)
+        growth = sorted([ (p , res[p][freshness] ) for p in res.keys() if res[p][freshness] > 0 ],
+                    key=lambda kv_pair: kv_pair[1],
+                    reverse=True,
+                    )
+        top_growth=dict(growth[:5])
+        print( "\n".join([ "%8s : %r" % (as_human(int(v)), repr(k)) for k,v in top_growth.items() ]) )
+        print("-" * 80)
+        print( "%8s : reste" % as_human(sum([ x[1] for x in growth[5:]])))
+        print("-" * 80)
 
 
 
-print("#### errors ####")
-pp(errors)
+    print("#### errors ####")
+    pp(errors)

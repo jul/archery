@@ -8,9 +8,9 @@ all the combined traits will ensure consistant properties on :
 - distributivity;
 - neutral element of addition & multiplication
 
-Planned : 
+Planned :
 Linear algebrae,
-Hermitian Algebrae 
+Hermitian Algebrae
 and so much more....
 
 """
@@ -20,20 +20,16 @@ from .trait import Copier
 
 
 class LinearAlgebrae(
-    Copier,
-    InclusiveAdder, 
-    ExclusiveMuler, 
-    TaintedExclusiveDiver, 
-    InclusiveSubber):
+    Copier, InclusiveAdder, ExclusiveMuler, TaintedExclusiveDiver, InclusiveSubber
+):
     """A set of + - * / pretty consistant"""
-    pass
 
-class SimplyAdd(Copier, InclusiveAdder): pass
-
-class VectorDict(
-        LinearAlgebrae,
-        Vector
-    ):
     pass
 
 
+class SimplyAdd(Copier, InclusiveAdder):
+    pass
+
+
+class VectorDict(LinearAlgebrae, Vector):
+    pass
