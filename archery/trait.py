@@ -5,34 +5,43 @@
 You'll make your code perspire smartness by all its pore(c)(tm)(r).
 """
 from __future__ import division
+
 try:
     from collections import MutableMapping, Mapping
 except ImportError:
     from collections.abc import MutableMapping, Mapping
 
 from .barrack import paired_row_iter, mapping_row_iter, bowyer
-__all__ = [ 'InclusiveAdder', 'InclusiveSubber', "Vector",
-    'ExclusiveMuler', 'TaintedExclusiveDiver',
-    'Copier', 'Iterator', 'Searchable']
+
+__all__ = [
+    "InclusiveAdder",
+    "InclusiveSubber",
+    "Vector",
+    "ExclusiveMuler",
+    "TaintedExclusiveDiver",
+    "Copier",
+    "Iterator",
+    "Searchable",
+]
 from copy import deepcopy
-class Copier(object):
+
+
+class Copier:
     def copy(self):
         try:
             return deepcopy(
-                bowyer(
-                    globals()[type(self).__name__], 
-                    {k:v for k,v in self.items()}
-                )
+                bowyer(globals()[type(self).__name__], {k: v for k, v in self.items()})
             )
         except KeyError:
             pass
-        if hasattr(self,"_asdict"):
+        if hasattr(self, "_asdict"):
             return self._asdict().copy()
-        if hasattr(super(Copier, self),"copy"):
-            return self.__class__(super(Copier, self).copy())
+        if hasattr(super(), "copy"):
+            return self.__class__(super().copy())
         return deepcopy(self)
 
-class Vector(object):
+
+class Vector:
 
     def dot(u, v):
         """
@@ -40,8 +49,7 @@ class Vector(object):
         https://en.wikipedia.org/wiki/Dot_product
 
         """
-        return sum(v for i,v in paired_row_iter(u*v))
-
+        return sum(v for i, v in paired_row_iter(u * v))
 
     def __abs__(v):
         """return the absolute value (hence >=0)
@@ -49,7 +57,7 @@ class Vector(object):
         Keys of the dict are the dimension, values are the metrics
         https://en.wikipedia.org/wiki/Euclidean_distance
         """
-        return v.dot(v)**.5
+        return v.dot(v) ** 0.5
 
     def cos(u, v):
         """
@@ -60,24 +68,26 @@ class Vector(object):
         """
         return u.dot(v) / abs(u) / abs(v)
 
+
 from copy import deepcopy
 
-class InclusiveAdder(object):
-    """ making dict able to add 
 
- >>> from archery.trait import Adder
- >>> from collections import defaultdict
- >>> class dad(defaultdict,Adder,Subber):pass
- ... 
- >>> tata = dad( int, dict(a = 1, b = 0, c = -1 ) )
- >>> 
- >>> toto = dad( int, dict(a = 1 ) )
- >>> print toto+tata
- defaultdict(<type 'int'>, {'a': 2, 'c': -1, 'b': 0})
- >>> toto+=1
- defaultdict(<type 'int'>, {'a': 2}
+class InclusiveAdder:
+    """making dict able to add
 
-"""
+    >>> from archery.trait import Adder
+    >>> from collections import defaultdict
+    >>> class dad(defaultdict,Adder,Subber):pass
+    ...
+    >>> tata = dad( int, dict(a = 1, b = 0, c = -1 ) )
+    >>>
+    >>> toto = dad( int, dict(a = 1 ) )
+    >>> print toto+tata
+    defaultdict(<type 'int'>, {'a': 2, 'c': -1, 'b': 0})
+    >>> toto+=1
+    defaultdict(<type 'int'>, {'a': 2}
+
+    """
 
     def __add__(self, other):
         """adder"""
@@ -106,23 +116,24 @@ class InclusiveAdder(object):
         return copy + other
 
 
-class TaintedExclusiveDiver(object):
+class TaintedExclusiveDiver:
     """Making dict able to truedivide (you need to provide a muler)
     This operator is tainted thanks to my inability to make neither
     from __future__ import truedivision
     nor
     from operator import truetruediv
-    works. 
+    works.
     So as a result I use implicit 1.0 cast
-    
-    Why don't I stick to regular (broken) python truedivision ? 
-    Don't you think this  : 
+
+    Why don't I stick to regular (broken) python truedivision ?
+    Don't you think this  :
     0.5 * a == a / 2
     less surprising than :
     a/2 = something that is part /2 (if result is int),
     and sometimes something else
 
     )"""
+
     def __div__(self, other):
         return self.__truediv__(other)
 
@@ -147,17 +158,17 @@ class TaintedExclusiveDiver(object):
         todel = []
         for k in self:
             if k in other:
-                self[k] /=  other[k]
+                self[k] /= other[k]
             else:
                 todel += [k]
         for k in todel:
-            del(self[k])
+            del self[k]
         return self
 
     def __iinv__(self):
         """in place inversion 1/a"""
         for k, v in self.items():
-            self[k] = 1/v
+            self[k] = 1 / v
         return self
 
     def __rtruediv__(self, other):
@@ -167,14 +178,14 @@ class TaintedExclusiveDiver(object):
         return copy / other
 
 
-class ExclusiveMuler(object):
+class ExclusiveMuler:
     """Making dict able to multiply"""
 
     def __mul__(self, other):
         """muler"""
         copy = self.copy()
         copy *= other
-        return copy 
+        return copy
 
     def __iscalmul__(self, number):
         """in place imul"""
@@ -191,9 +202,11 @@ class ExclusiveMuler(object):
             if k in other:
                 self[k] *= other[k]
             else:
-                todel |= {k,}
+                todel |= {
+                    k,
+                }
         for k in todel:
-            del(self[k])
+            del self[k]
         return self
 
     def __rmul__(self, other):
@@ -208,7 +221,8 @@ class ExclusiveMuler(object):
             return copy.__iscalmul__(other)
         return copy.__mul__(other)
 
-class Iterator(object):
+
+class Iterator:
 
     def __iter__(self):
         self.__iter = mapping_row_iter(self)
@@ -217,7 +231,8 @@ class Iterator(object):
     def __next__(self):
         return self.__iter()
 
-class InclusiveSubber(object):
+
+class InclusiveSubber:
     def __sub__(self, other):
         """suber"""
         copy = self.copy()
@@ -225,9 +240,9 @@ class InclusiveSubber(object):
         return copy
 
     def __isub__(self, other):
-# breaks consistency
-#        for k in self.keys():
-#            self[k] -= other
+        # breaks consistency
+        #        for k in self.keys():
+        #            self[k] -= other
         if not isinstance(other, MutableMapping):
             self.__iinc__(-other)
             return self
@@ -251,7 +266,6 @@ class InclusiveSubber(object):
 
 class Searchable(Iterator):
 
-
     def search(self, predicate):
         """Return a generator of all tuples made of :
         - all keys leading to a value
@@ -262,7 +276,7 @@ class Searchable(Iterator):
                 yield el
 
     def leaf_search(self, predicate):
-        """Return a generator all all values matching 
+        """Return a generator all all values matching
         the predicates"""
         for el in self:
             value = el[-1]
