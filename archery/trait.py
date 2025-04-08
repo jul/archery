@@ -26,7 +26,7 @@ __all__ = [
 from copy import deepcopy
 
 
-class Copier(object):
+class Copier:
     def copy(self):
         try:
             return deepcopy(
@@ -36,12 +36,12 @@ class Copier(object):
             pass
         if hasattr(self, "_asdict"):
             return self._asdict().copy()
-        if hasattr(super(Copier, self), "copy"):
-            return self.__class__(super(Copier, self).copy())
+        if hasattr(super(), "copy"):
+            return self.__class__(super().copy())
         return deepcopy(self)
 
 
-class Vector(object):
+class Vector:
 
     def dot(u, v):
         """
@@ -72,7 +72,7 @@ class Vector(object):
 from copy import deepcopy
 
 
-class InclusiveAdder(object):
+class InclusiveAdder:
     """making dict able to add
 
     >>> from archery.trait import Adder
@@ -116,7 +116,7 @@ class InclusiveAdder(object):
         return copy + other
 
 
-class TaintedExclusiveDiver(object):
+class TaintedExclusiveDiver:
     """Making dict able to truedivide (you need to provide a muler)
     This operator is tainted thanks to my inability to make neither
     from __future__ import truedivision
@@ -178,7 +178,7 @@ class TaintedExclusiveDiver(object):
         return copy / other
 
 
-class ExclusiveMuler(object):
+class ExclusiveMuler:
     """Making dict able to multiply"""
 
     def __mul__(self, other):
@@ -222,7 +222,7 @@ class ExclusiveMuler(object):
         return copy.__mul__(other)
 
 
-class Iterator(object):
+class Iterator:
 
     def __iter__(self):
         self.__iter = mapping_row_iter(self)
@@ -232,7 +232,7 @@ class Iterator(object):
         return self.__iter()
 
 
-class InclusiveSubber(object):
+class InclusiveSubber:
     def __sub__(self, other):
         """suber"""
         copy = self.copy()
