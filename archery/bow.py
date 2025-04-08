@@ -84,7 +84,7 @@ class _vdict(VectorDict, dict):
 
 class vdict(_vdict):
     def __init__(self, *a, **kw):
-        super(_vdict, self).__init__(*a, **kw)
+        super().__init__(*a, **kw)
         for k, v in self.items():
             if isinstance(v, MutableMapping):
                 self[k] = bowyer(globals()[type(self).__name__], v)
@@ -105,7 +105,7 @@ class edict(_sdict):
 
     def __init__(self, *a, **kw):
         warn("ExpDict/edict will become sdict", DeprecationWarning)
-        super(_sdict, self).__init__(*a, **kw)
+        super().__init__(*a, **kw)
         for k, v in self.items():
             if isinstance(v, MutableMapping):
                 self[k] = bowyer(globals()[type(self).__name__], v)
