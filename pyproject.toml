@@ -30,7 +30,7 @@ dependencies = []
 
 [project.urls]
 Homepage = "https://github.com/jul/archery"
-Documentation = "https://github.com/jul/archery"
+Documentation = "https://archery.readthedocs.io/en/latest/index.html"
 Repository = "https://github.com/jul/archery"
 Issues = "https://github.com/jul/archery/issues"
 Changelog = "https://github.com/jul/archery/release-notes/"
