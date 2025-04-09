@@ -4,13 +4,14 @@ requires = ["flit_core >=3.2,<4"]
 
 [project]
 name = "archery"
-version = "2.0.1"
+version = "2.0.2"
 description = "Traits (Mixins) to give +,/,-,* to MutableMapping"
 readme = "README.txt"
 python = ">=3.7"
 wheel = "*"
 authors = [
     { name = "julien tayon", email = "julien@tayon.net" },
+    { name = "stephane bard", email = "stephane.bard@gmail.com" },
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
