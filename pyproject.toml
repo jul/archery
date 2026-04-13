@@ -4,7 +4,7 @@ requires = ["flit_core >=3.2,<4"]
 
 [project]
 name = "archery"
-version = "2.0.0"
+version = "2.0.1"
 description = "Traits (Mixins) to give +,/,-,* to MutableMapping"
 readme = "README.txt"
 python = ">=3.7"
@@ -34,11 +34,7 @@ Homepage = "https://github.com/jul/archery"
 Documentation = "https://archery.readthedocs.io/en/latest/index.html"
 Repository = "https://github.com/jul/archery"
 Issues = "https://github.com/jul/archery/issues"
-Changelog = "https://github.com/jul/archery/release-notes/"
-
-[project.scripts]
-big = "archery.big:main"
-
+Changelog = "https://github.com/jul/archery/README.rst"
 
 [tool.pytest.ini_options]
 addopts = [

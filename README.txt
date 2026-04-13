@@ -175,18 +175,16 @@ You can also inherit LinearAlgebrae
 Changelog
 *********
 
-2.1.0
+2.0.1
+=====
+
+- removed big a small utility to see changes in filesystem because it has
+  nothing to do here;
+- correct pyproject.toml
+
+2.0.0
 =====
 
 - Improved code coverage
 - bug fixed in a/=b
 
-
-
-
-Resource
-********
-
-- Ticketing: https://github.com/jul/archery/issues?state=open
-- Source: https://github.com/jul/archery
-- Latest documentation: http://archery.readthedocs.org/en/latest/index.html
