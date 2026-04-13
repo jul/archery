@@ -34,8 +34,6 @@ class Copier:
             )
         except KeyError:
             pass
-        if hasattr(self, "_asdict"):
-            return self._asdict().copy()
         if hasattr(super(), "copy"):
             return self.__class__(super().copy())
         return deepcopy(self)
@@ -45,7 +43,7 @@ class Vector:
 
     def dot(u, v):
         """
-        scalar product of two MappableMappings (recursive)
+        product of two MappableMappings (recursive)
         https://en.wikipedia.org/wiki/Dot_product
 
         """
@@ -71,7 +69,6 @@ class Vector:
 
 from copy import deepcopy
 
-
 class InclusiveAdder:
     """making dict able to add
 
@@ -88,8 +85,23 @@ class InclusiveAdder:
     defaultdict(<type 'int'>, {'a': 2}
 
     """
+    def __eq__(self, other):
+        """for hash"""
+        if not isinstance(other, MutableMapping):
+            return False
+        skeys = self.keys()
+        okeys = other.keys()
+        if set(okeys) - set(skeys) or set(okeys) != set(skeys):
+            return False
+        for k in skeys:
+            if self[k] != other[k]:
+                return False
+        return True
 
-    def __add__(self, other):
+    def __hash__(self):
+        return hash(tuple(self.keys()))
+
+    def __add__(self, other: MutableMapping):
         """adder"""
         copy = self.copy()
         copy += other
@@ -133,16 +145,6 @@ class TaintedExclusiveDiver:
     and sometimes something else
 
     )"""
-
-    def __div__(self, other):
-        return self.__truediv__(other)
-
-    def __idiv__(self, other):
-        return self.__itruediv__(other)
-
-    def __rdiv__(self, other):
-        return self.__rtruediv__(other)
-
     def __truediv__(self, other):
         """truediver"""
         copy = self.copy()
@@ -175,7 +177,7 @@ class TaintedExclusiveDiver:
         copy = self.copy()
         if not isinstance(other, MutableMapping):
             return copy.__iinv__().__iscalmul__(other)
-        return copy / other
+        return copy/other
 
 
 class ExclusiveMuler:
@@ -214,13 +216,6 @@ class ExclusiveMuler:
         if not isinstance(other, MutableMapping):
             return copy.__iscalmul__(other)
         return copy.__mul__(other)
-
-    def __lmul__(self, other):
-        copy = self.copy()
-        if not isinstance(other, MutableMapping):
-            return copy.__iscalmul__(other)
-        return copy.__mul__(other)
-
 
 class Iterator:
 

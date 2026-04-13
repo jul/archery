@@ -70,6 +70,11 @@ class TestVectorDict(unittest.TestCase):
                 vdict(x=1,y=0).cos(vdict(x=1,y=1)),
                 cos(pi/4)
         )
+    
+    def testDot(self):
+        self.assertAlmostEqual(
+            vdict(x=1, y=2.5, z=3).dot(vdict(y=1.0, z=1.0)),
+            5.5)
 
 class TestBarrack(unittest.TestCase):
     def test_path(self):
@@ -274,6 +279,7 @@ class TestDaikyu(unittest.TestCase):
     def setUp(self):
         self.easy = Daikyu( x=1, y=1, z=0)
         self.easy_too = Daikyu( x=0, y=-2, o=0)
+
         
         self.a_tree = dict(
             a = 1,
@@ -284,6 +290,36 @@ class TestDaikyu(unittest.TestCase):
             point = self.easy
         )
         self.cplx = bowyer(Daikyu,self.a_tree)
+    
+    def test_coverage_eq(self):
+        self.assertEqual(mdict(a=1) ==mdict({(1,2):1}), False)
+
+
+    def test_coverage_eq2(self):
+        self.assertEqual(Daikyu(x=1, y=2)==set([1, 2]), False)
+
+
+    def test_coverage_eq3(self):
+        self.assertEqual(Daikyu(x=1, y=2)==mdict(x=1, y=1), False)
+
+
+    def test_coverage_hash(self):
+        self.assertEqual(Daikyu(x=1, y=2).__hash__(),mdict(x=1, y=1).__hash__())
+
+    def test_coverage_div(self):
+        self.assertEqual(Daikyu(x=1, y=2) /2, Daikyu(x=0.5,y=1))
+
+    def test_rmul(self):
+        self.assertEqual(dict(x=1) * self.easy *dict(x=1), dict(x=1))
+
+    def test_coverage_rdiv(self):
+        a = dict(a=1)
+        b=mdict(a=2)
+        c=b
+        a/=b
+        self.assertEqual(a,mdict(a=1)/ mdict(a=2))
+        self.assertEqual(b,c)
+        self.assertEqual(b,mdict(a=2))
 
 
     def test_bug_1(self):
@@ -382,5 +418,17 @@ class TestDaikyu(unittest.TestCase):
             {'x' : 2}
         )
 
+class TestIterator(unittest.TestCase):
+    def setUp(self):
+        from archery.trait import Iterator
+        class Dicterator(Iterator, dict):pass
+
+        self.easy = Dicterator( x=0, z= Dicterator(a=1), y=-2, o=0)
+
+    def test_iterate(self):
+        self.assertEqual(
+            list(self.easy), 
+            [('x', 0), ('z', 'a', 1), ('y', -2), ('o', 0)])
+    
 if __name__ == '__main__':
     unittest.main(verbosity=4)

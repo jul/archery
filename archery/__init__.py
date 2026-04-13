@@ -11,6 +11,7 @@ __author_email__ = "julien@tayon.net"
 __all__ = [
     "__version__",
     "vdict",
+    "big",
     "sdict",
     "mdict",
     "paired_row_iter",

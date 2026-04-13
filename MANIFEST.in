@@ -1,5 +1,6 @@
 include archery/*py
 include archery/toy/big
+include archery/big
 include consistent_*py
 include README.txt
 include LICENSE.txt

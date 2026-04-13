@@ -37,7 +37,7 @@ Issues = "https://github.com/jul/archery/issues"
 Changelog = "https://github.com/jul/archery/release-notes/"
 
 [project.scripts]
-archery = "archery.toy.big:main"
+big = "archery.big:main"
 
 
 [tool.pytest.ini_options]
@@ -53,7 +53,8 @@ data_file = "coverage/.coverage"
 source = [
     "docs_src",
     "tests",
-    "archery"
+    "archery",
+    "archery/toy",
 ]
 
 [tool.ruff.lint]
