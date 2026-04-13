@@ -1,19 +1,3 @@
-
-.. image:: https://badge.fury.io/py/archery.svg
-    :target: https://badge.fury.io/py/archery
-
-.. image:: https://codecov.io/gh/jul/archery/branch/master/graph/badge.svg
-  :target: https://codecov.io/gh/jul/archery
-
-.. image:: https://readthedocs.org/projects/archery/badge/?version=latest
-    :target: https://archery.readthedocs.io/en/latest/?badge=latest
-    :alt: Documentation Status
-
-
-.. image:: https://img.shields.io/badge/py2.7|3.3|3.4|3.5|3.6|3.7-ok-brightgreen.svg
-
-
-
 * Source : https://github.com/jul/archery
 * Tickets : https://github.com/jul/archery/issues?state=open
 * Latest documentation : http://archery.readthedocs.org/en/latest/index.html
