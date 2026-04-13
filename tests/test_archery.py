@@ -309,7 +309,8 @@ class TestDaikyu(unittest.TestCase):
         self.assertEqual(dict(x=1) * self.easy *dict(x=1), dict(x=1))
 
     def test_coverage_rsub(self):
-        self.assertEqual(dict(x=2) - mdict(x=1), dict(x=-1))
+        self.assertEqual(dict(x=1) - mdict(x=2), dict(x=-1))
+        self.assertEqual(mdict(x=1) - 2, dict(x=-1))
 
     def test_coverage_rdiv(self):
         a = dict(a=1)

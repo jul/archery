@@ -1,5 +1,3 @@
-.. image:: https://travis-ci.org/jul/archery.svg?branch=master
-    :target: https://travis-ci.org/jul/archery
 
 .. image:: https://badge.fury.io/py/archery.svg
     :target: https://badge.fury.io/py/archery
@@ -174,6 +172,12 @@ You can also inherit LinearAlgebrae
 
 Changelog
 *********
+
+2.0.2
+=====
+
+- code coverage is now 99%
+- bug dyslexia rsub shooted
 
 2.0.1
 =====

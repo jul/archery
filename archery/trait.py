@@ -247,7 +247,7 @@ class InclusiveSubber:
         copy = self.copy()
         if not isinstance(other, MutableMapping):
             return copy.__neg__().__iinc__(other)
-        return copy.__sub__(other)
+        return copy.__sub__(other).__neg__()
 
     def __neg__(self):
         """in place negation"""
