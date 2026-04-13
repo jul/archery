@@ -302,15 +302,14 @@ class TestDaikyu(unittest.TestCase):
     def test_coverage_eq3(self):
         self.assertEqual(Daikyu(x=1, y=2)==mdict(x=1, y=1), False)
 
-
-    def test_coverage_hash(self):
-        self.assertEqual(Daikyu(x=1, y=2).__hash__(),mdict(x=1, y=1).__hash__())
-
     def test_coverage_div(self):
         self.assertEqual(Daikyu(x=1, y=2) /2, Daikyu(x=0.5,y=1))
 
     def test_rmul(self):
         self.assertEqual(dict(x=1) * self.easy *dict(x=1), dict(x=1))
+
+    def test_coverage_rsub(self):
+        self.assertEqual(dict(x=2) - mdict(x=1), dict(x=-1))
 
     def test_coverage_rdiv(self):
         a = dict(a=1)

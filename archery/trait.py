@@ -98,9 +98,6 @@ class InclusiveAdder:
                 return False
         return True
 
-    def __hash__(self):
-        return hash(tuple(self.keys()))
-
     def __add__(self, other: MutableMapping):
         """adder"""
         copy = self.copy()
@@ -177,7 +174,7 @@ class TaintedExclusiveDiver:
         copy = self.copy()
         if not isinstance(other, MutableMapping):
             return copy.__iinv__().__iscalmul__(other)
-        return copy/other
+        return (1/copy) * other
 
 
 class ExclusiveMuler:

@@ -172,10 +172,21 @@ Here is an example of a cosine similarities out of the box on the *Collections.C
 
 You can also inherit LinearAlgebrae
 
+Changelog
+*********
+
+2.1.0
+=====
+
+- Improved code coverage
+- bug fixed in a/=b
+
+
+
 
 Resource
 ********
 
-Ticketing: https://github.com/jul/archery/issues?state=open
-Source: https://github.com/jul/archery
-Latest documentation: http://archery.readthedocs.org/en/latest/index.html
+- Ticketing: https://github.com/jul/archery/issues?state=open
+- Source: https://github.com/jul/archery
+- Latest documentation: http://archery.readthedocs.org/en/latest/index.html
