@@ -157,6 +157,11 @@ You can also inherit LinearAlgebrae
 Changelog
 *********
 
+2.0.3
+=====
+
+- fixed a bug in import *
+
 2.0.2
 =====
 
